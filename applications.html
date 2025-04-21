@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Applications | E-Office Management</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+  <style>
+    body, html {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f1f3f5;
+    }
+
+    .header {
+      height: 70px;
+      background-color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 25px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .header .logo-title {
+      display: flex;
+      align-items: center;
+    }
+
+    .header .logo-title img {
+      height: 60px;
+      margin-right: 10px;
+    }
+
+    .header .user-profile {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .profile-icon {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: right;
+    }
+
+    .profile-icon i {
+      font-size: 24px;
+      color: #333;
+    }
+
+    .user-role {
+      font-size: 12px;
+      color: gray;
+    }
+
+    .profile-dropdown {
+      position: absolute;
+      top: 60px;
+      right: 0;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      width: 150px;
+      padding: 10px;
+      display: none;
+      z-index: 10;
+    }
+
+    .profile-dropdown.show {
+      display: block;
+    }
+
+    .sidebar {
+      width: 220px;
+      background: #343a40;
+      color: white;
+      height: 100vh;
+      position: fixed;
+      top: 70px;
+      left: 0;
+      padding-top: 20px;
+    }
+
+    .sidebar .nav-link {
+      color: #adb5bd;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+    }
+    .sidebar .nav-link i {
+      margin-right: 10px;
+    }
+
+    .sidebar .nav-link:hover, .sidebar .nav-link.active {
+      background: #495057;
+      color: white;
+    }
+
+    .main-content {
+      margin-left: 220px;
+      margin-top: 70px;
+      padding: 30px;
+    }
+
+    .search-bar {
+      margin-bottom: 20px;
+    }
+
+    .application-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.application-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 15px;
+  box-shadow: 0px 2px 10px rgba(0,0,0,0.05);
+  flex: 0 0 48%;
+}
+
+.stage-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.stage-select {
+  min-width: 160px;
+  border: none;
+  color: white;
+  font-weight: bold;
+  padding: 6px 12px;
+  border-radius: 6px;
+}
+
+.stage-received { background-color: #ffc107; color: black; }      /* Blue */
+.stage-in-progress { background-color: #17a2b8; color: white; }   /* Orange */
+.stage-reviewed { background-color: #007bff; color: white; }     /* Yellow */
+.stage-completed { background-color: #28a745; color: white; }      /* Green */
+
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="logo-title">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYiFdEW56wVH-LUuoUp7CmFzybzsFrSKDAOg&s" alt="Logo">
+    <h5 class="mb-0">E-Office Management</h5>
+  </div>
+  <div class="user-profile" onclick="toggleDropdown()">
+    <div class="profile-icon">
+      <i class="bi bi-person-circle"></i>
+      <span class="user-role">Admin</span>
+    </div>
+    <div class="profile-dropdown" id="profileDropdown">
+      <button class="btn btn-outline-danger w-100" onclick="logout()">Logout</button>
+    </div>
+  </div>
+</div>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <a href="dashboard.html" class="nav-link"><i class="bi bi-house-door-fill"></i> Dashboard</a>
+  <!-- <a href="#" class="nav-link"><i class="bi bi-person-plus-fill"></i> Add Visitor</a> -->
+  <a href="applications.html" class="nav-link active"><i class="bi bi-folder-fill"></i> Applications</a>
+  <!-- <a href="#" class="nav-link"><i class="bi bi-gear-fill"></i> Settings</a> -->
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main-content">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h4>Submitted Applications</h4>
+    <input id="searchInput" type="text" class="form-control search-bar" style="max-width: 300px;" placeholder="Search by Application ID or Phone...">
+  </div>
+
+  <div id="applicationsList"></div>
+</div>
+
+<script>
+  function toggleDropdown() {
+    const dropdown = document.getElementById('profileDropdown');
+    dropdown.classList.toggle('show');
+  }
+
+  function logout() {
+    window.location.href = 'index.html';
+  }
+
+  document.addEventListener('click', function(event) {
+    const profile = document.querySelector('.user-profile');
+    const dropdown = document.getElementById('profileDropdown');
+    if (!profile.contains(event.target)) {
+      dropdown.classList.remove('show');
+    }
+  });
+
+  // Load and render applications
+  const stages = ["Received", "In Progress", "Reviewed", "Completed"];
+
+  function renderApplications(filter = "") {
+  const container = document.getElementById("applicationsList");
+  container.innerHTML = "";
+
+  const apps = JSON.parse(localStorage.getItem("applications") || "[]");
+
+  const filtered = apps.filter(app => 
+    app.id.toLowerCase().includes(filter.toLowerCase()) ||
+    app.phone.toLowerCase().includes(filter.toLowerCase())
+  );
+
+  if (filtered.length === 0) {
+    container.innerHTML = "<p>No applications found.</p>";
+    return;
+  }
+
+  const rowDiv = document.createElement("div");
+  rowDiv.className = "application-row";
+
+  filtered.forEach((app, index) => {
+    const div = document.createElement("div");
+    div.className = "application-card";
+
+    const stageClass = {
+      "Received": "stage-received",
+      "In Progress": "stage-in-progress",
+      "Reviewed": "stage-reviewed",
+      "Completed": "stage-completed"
+    }[app.stage] || "stage-received";
+
+    div.innerHTML = `
+      <h5>Application ID: ${app.id}</h5>
+      <p><strong>Name:</strong> ${app.name}</p>
+      <p><strong>Phone:</strong> ${app.phone}</p>
+      <p><strong>Address:</strong> ${app.address}</p>
+      <p><strong>Category:</strong> ${app.category}</p>
+      <p><strong>Department:</strong> ${app.department}</p>
+      <p><strong>Submitted On:</strong> ${app.createdAt}</p>
+      <div class="stage-wrapper">
+        <label><strong>Stage:</strong></label>
+        <select class="stage-select ${stageClass}" onchange="updateStage(${index}, this.value)">
+          ${stages.map(stage => `<option value="${stage}" ${stage === app.stage ? 'selected' : ''}>${stage}</option>`).join('')}
+        </select>
+      </div>
+    `;
+
+    rowDiv.appendChild(div);
+  });
+
+  container.appendChild(rowDiv);
+}
+
+
+  function updateStage(index, newStage) {
+    const apps = JSON.parse(localStorage.getItem("applications") || "[]");
+    apps[index].stage = newStage;
+    localStorage.setItem("applications", JSON.stringify(apps));
+    renderApplications(document.getElementById("searchInput").value);
+  }
+
+  document.getElementById("searchInput").addEventListener("input", function() {
+    renderApplications(this.value);
+  });
+
+  renderApplications(); // Initial call
+</script>
+</body>
+</html>

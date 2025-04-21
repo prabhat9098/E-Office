@@ -139,9 +139,9 @@
 <!-- SIDEBAR -->
 <div class="sidebar">
   <a href="#" class="nav-link active"><i class="bi bi-house-door-fill"></i> Dashboard</a>
-  <a href="#" class="nav-link"><i class="bi bi-person-plus-fill"></i> Add Visitor</a>
-  <a href="#" class="nav-link"><i class="bi bi-folder-fill"></i> Applications</a>
-  <a href="#" class="nav-link"><i class="bi bi-gear-fill"></i> Settings</a>
+  <!-- <a href="#" class="nav-link"><i class="bi bi-person-plus-fill"></i> Add Visitor</a> -->
+  <a href="applications.html" class="nav-link"><i class="bi bi-folder-fill"></i> Applications</a>
+  <!-- <a href="#" class="nav-link"><i class="bi bi-gear-fill"></i> Settings</a> -->
 </div>
 
 <!-- MAIN CONTENT -->
@@ -210,12 +210,37 @@
     }
   });
 
+  // Application form submit
   document.getElementById('applicationForm').addEventListener('submit', function (e) {
     e.preventDefault();
-    alert("Your application has been submitted.\nAcknowledgement sent via SMS/Email.");
+
+    const name = this.querySelector('input[type="text"]').value;
+    const phone = this.querySelector('input[type="tel"]').value;
+    const address = this.querySelector('textarea').value;
+    const category = this.querySelector('select').value;
+    const department = this.querySelectorAll('select')[1].value;
+    const id = 'APP' + Math.floor(1000 + Math.random() * 9000);
+
+    const appData = {
+      id,
+      name,
+      phone,
+      address,
+      category,
+      department,
+      stage: 'Received', // Initial stage
+      createdAt: new Date().toLocaleString()
+    };
+
+    const existing = JSON.parse(localStorage.getItem('applications') || '[]');
+    existing.push(appData);
+    localStorage.setItem('applications', JSON.stringify(existing));
+
+    alert(`Application Submitted!\nApplication ID: ${id}`);
     this.reset();
   });
 </script>
+
 
 </body>
 </html>
