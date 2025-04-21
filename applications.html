@@ -17,14 +17,20 @@
     }
 
     .header {
-      height: 70px;
-      background-color: #ffffff;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 25px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
+  height: 70px;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 25px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  position: fixed;           /* 🔥 This makes it sticky */
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;              /* Ensure it stays above other elements */
+}
+
 
     .header .logo-title {
       display: flex;
