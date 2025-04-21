@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Officer Manager - Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body, html {
+      height: 100%;
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .login-container {
+      height: 100vh;
+      display: flex;
+    }
+
+    .login-img {
+      background: url('https://img.freepik.com/free-vector/modern-devices-composition-with-isometric-image-modern-workplace-with-lots-smart-gadgets-table-illustration_1284-29124.jpg?t=st=1745174692~exp=1745178292~hmac=3f14ff8a29992daa651484d0305bb31db0ab6673e568220b98581126c514759c&w=740') no-repeat center center;
+      background-size: cover;
+      flex: 1;
+    }
+
+    .login-form {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #ffffff;
+    }
+
+    .form-box {
+      width: 80%;
+      max-width: 400px;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-img"></div>
+    <div class="login-form">
+      <div class="form-box">
+        <h3 class="mb-4 text-center">Officer Manager Login</h3>
+        <div class="mb-3">
+          <label class="form-label">User Name</label>
+          <input type="text" class="form-control" id="username" placeholder="Enter username">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-control" id="password" placeholder="Enter password">
+        </div>
+        <div class="mb-3 text-end">
+          <a href="#" class="text-decoration-none small">Forgot Password?</a>
+        </div>
+        <button class="btn btn-primary w-100" onclick="login()">Login</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function login() {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      if (username === 'admin' && password === '123') {
+        window.location.href = "dashboard.html";
+      } else {
+        alert('Invalid credentials. Try admin / 123');
+      }
+    }
+  </script>
+</body>
+</html>

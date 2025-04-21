@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard | E-Office Management</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+  <style>
+    body, html {
+      margin: 0;
+      height: 100%;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f1f3f5;
+    }
+
+    .header {
+      height: 70px;
+      background-color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 25px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .header .logo-title {
+      display: flex;
+      align-items: center;
+    }
+
+    .header .logo-title img {
+      height: 60px;
+      margin-right: 10px;
+    }
+
+    .header .user-profile {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .profile-icon {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: right;
+    }
+
+    .profile-icon i {
+      font-size: 24px;
+      color: #333;
+    }
+
+    .user-role {
+      font-size: 12px;
+      color: gray;
+    }
+
+    .profile-dropdown {
+      position: absolute;
+      top: 60px;
+      right: 0;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      width: 150px;
+      padding: 10px;
+      display: none;
+      z-index: 10;
+    }
+
+    .profile-dropdown.show {
+      display: block;
+    }
+
+    .sidebar {
+      width: 220px;
+      background: #343a40;
+      color: white;
+      height: 100vh;
+      position: fixed;
+      top: 70px;
+      left: 0;
+      padding-top: 20px;
+    }
+
+    .sidebar .nav-link {
+      color: #adb5bd;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+    }
+
+    .sidebar .nav-link i {
+      margin-right: 10px;
+    }
+
+    .sidebar .nav-link:hover, .sidebar .nav-link.active {
+      background: #495057;
+      color: white;
+    }
+
+    .main-content {
+      margin-left: 220px;
+      margin-top: 70px;
+      padding: 30px;
+    }
+
+    .dashboard-card {
+      background: #ffffff;
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0px 5px 20px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="logo-title">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYiFdEW56wVH-LUuoUp7CmFzybzsFrSKDAOg&s" alt="Logo">
+    <h5 class="mb-0">E-Office Management</h5>
+  </div>
+  <div class="user-profile" onclick="toggleDropdown()">
+    <div class="profile-icon">
+      <i class="bi bi-person-circle"></i>
+      <span class="user-role">Admin</span>
+    </div>
+    <div class="profile-dropdown" id="profileDropdown">
+      <button class="btn btn-outline-danger w-100" onclick="logout()">Logout</button>
+    </div>
+  </div>
+</div>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <a href="#" class="nav-link active"><i class="bi bi-house-door-fill"></i> Dashboard</a>
+  <a href="#" class="nav-link"><i class="bi bi-person-plus-fill"></i> Add Visitor</a>
+  <a href="#" class="nav-link"><i class="bi bi-folder-fill"></i> Applications</a>
+  <a href="#" class="nav-link"><i class="bi bi-gear-fill"></i> Settings</a>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main-content">
+  <div class="dashboard-card">
+    <h4 class="mb-4">Application Submission</h4>
+    <form id="applicationForm">
+      <div class="mb-3">
+        <label class="form-label">Name of Visitor</label>
+        <input type="text" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Contact Number</label>
+        <input type="tel" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Address</label>
+        <textarea class="form-control" rows="2" required></textarea>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Category of Application</label>
+        <select class="form-select" required>
+          <option selected disabled>Select Category</option>
+          <option>Complaint</option>
+          <option>Request</option>
+          <option>Suggestion</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Department</label>
+        <select class="form-select" required>
+          <option selected disabled>Select Department</option>
+          <option>Home</option>
+          <option>Education</option>
+          <option>Self Constituency</option>
+          <option>Health</option>
+          <option>Public Works</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Upload Application</label>
+        <input type="file" class="form-control" required>
+      </div>
+      <button type="submit" class="btn btn-success w-100">SUBMIT</button>
+    </form>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script>
+  function toggleDropdown() {
+    const dropdown = document.getElementById('profileDropdown');
+    dropdown.classList.toggle('show');
+  }
+
+  function logout() {
+    window.location.href = 'index.html'; // Go back to login page
+  }
+
+  document.addEventListener('click', function(event) {
+    const profile = document.querySelector('.user-profile');
+    const dropdown = document.getElementById('profileDropdown');
+    if (!profile.contains(event.target)) {
+      dropdown.classList.remove('show');
+    }
+  });
+
+  document.getElementById('applicationForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    alert("Your application has been submitted.\nAcknowledgement sent via SMS/Email.");
+    this.reset();
+  });
+</script>
+
+</body>
+</html>
