@@ -198,7 +198,6 @@
           <th data-translate="applicationType">Type of Application</th>
           <th data-translate="department">Department</th>
           <th data-translate="submittedOn">Submitted On</th>
-          <th data-translate="address">address</th>
           <th data-translate="stage">Stage</th>
           <th data-translate="updatedBy">Updated By</th>
           <th data-translate="updatedAt">Updated At</th>
@@ -279,7 +278,7 @@
         <td>${app.applicationType}</td>
         <td>${app.department}</td>
         <td>${app.createdAt}</td>
-        <td>${app.address}</td>
+        
         <td>
           <select class="form-select ${stageClass}" onchange="updateStage(${app.index}, this.value)">
             ${stages.map(stage => `<option value="${stage}" ${stage === app.stage ? "selected" : ""}>${stage}</option>`).join("")}
