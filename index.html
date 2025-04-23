@@ -1,76 +1,222 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Officer Manager - Login</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Officer Manager - Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body,
+      html {
+        height: 100%;
+        margin: 0;
+        font-family: "Segoe UI", sans-serif;
+      }
+      .login-container {
+        height: 100vh;
+        display: flex;
+      }
+      .login-img {
+        background: url("https://img.freepik.com/free-vector/modern-devices-composition-with-isometric-image-modern-workplace-with-lots-smart-gadgets-table-illustration_1284-29124.jpg?t=st=1745174692~exp=1745178292~hmac=3f14ff8a29992daa651484d0305bb31db0ab6673e568220b98581126c514759c&w=740")
+          no-repeat center center;
+        background-size: cover;
+        flex: 1;
+      }
+      .login-form {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #ffffff;
+      }
+      .form-box {
+        width: 80%;
+        max-width: 400px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-container">
+      <div class="login-img"></div>
+      <div class="login-form">
+        <div class="form-box">
+          <h3 class="mb-3 text-center" id="loginHeader">Officer Manager Login</h3>
 
-  <style>
-    body, html {
-      height: 100%;
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-    }
+          <!-- Switch for Admin/User -->
+          <div class="form-check form-switch mb-4 text-end">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="loginModeSwitch"
+            />
+            <label class="form-check-label" for="loginModeSwitch" id="switchLabel">Switch to Admin Login</label>
+          </div>
 
-    .login-container {
-      height: 100vh;
-      display: flex;
-    }
+          <!-- Admin Login -->
+          <div id="adminLogin">
+            <div class="mb-3">
+              <label class="form-label">User Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="username"
+                placeholder="Enter username"
+              />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Password</label>
+              <input
+                type="password"
+                class="form-control"
+                id="password"
+                placeholder="Enter password"
+              />
+            </div>
+            <button class="btn btn-primary w-100" onclick="login()">
+              Login
+            </button>
+          </div>
 
-    .login-img {
-      background: url('https://img.freepik.com/free-vector/modern-devices-composition-with-isometric-image-modern-workplace-with-lots-smart-gadgets-table-illustration_1284-29124.jpg?t=st=1745174692~exp=1745178292~hmac=3f14ff8a29992daa651484d0305bb31db0ab6673e568220b98581126c514759c&w=740') no-repeat center center;
-      background-size: cover;
-      flex: 1;
-    }
-
-    .login-form {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: #ffffff;
-    }
-
-    .form-box {
-      width: 80%;
-      max-width: 400px;
-    }
-  </style>
-</head>
-<body>
-  <div class="login-container">
-    <div class="login-img"></div>
-    <div class="login-form">
-      <div class="form-box">
-        <h3 class="mb-4 text-center">Officer Manager Login</h3>
-        <div class="mb-3">
-          <label class="form-label">User Name</label>
-          <input type="text" class="form-control" id="username" placeholder="Enter username">
+          <!-- User Login -->
+          <div id="userLogin" style="display: none">
+            <div class="mb-3">
+              <label class="form-label">Phone Number</label>
+              <input
+                type="text"
+                class="form-control"
+                id="phoneNumber"
+                placeholder="Enter your registered phone number"
+              />
+            </div>
+            <button class="btn btn-warning w-100 mb-2" onclick="checkPhone()">
+              Check Number
+            </button>
+            <button
+              class="btn btn-success w-100"
+              id="getOtpBtn"
+              onclick="sendOtp()"
+              disabled
+            >
+              Get OTP
+            </button>
+          </div>
         </div>
-        <div class="mb-3">
-          <label class="form-label">Password</label>
-          <input type="password" class="form-control" id="password" placeholder="Enter password">
-        </div>
-        <div class="mb-3 text-end">
-          <a href="#" class="text-decoration-none small">Forgot Password?</a>
-        </div>
-        <button class="btn btn-primary w-100" onclick="login()">Login</button>
       </div>
     </div>
-  </div>
 
-  <script>
-    function login() {
-      const username = document.getElementById('username').value.trim();
-      const password = document.getElementById('password').value.trim();
+    <!-- OTP Modal -->
+    <div
+      class="modal fade"
+      id="otpModal"
+      tabindex="-1"
+      aria-labelledby="otpModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-3">
+          <h5 class="modal-title" id="otpModalLabel">Enter OTP</h5>
+          <div class="modal-body">
+            <input
+              type="text"
+              class="form-control mb-3"
+              id="otpInput"
+              placeholder="Enter OTP"
+            />
+            <button class="btn btn-primary w-100" onclick="verifyOtp()">
+              Verify OTP
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
 
-      if (username === 'admin' && password === '123') {
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      const mockDatabase = ["9876543210", "9123456789"]; // Mocked valid phone numbers
+      let generatedOtp = "";
+
+      // Redirect if already logged in
+      if (localStorage.getItem("user")) {
         window.location.href = "dashboard.html";
-      } else {
-        alert('Invalid credentials. Try admin / 123');
       }
-    }
-  </script>
-</body>
+
+      // Toggle login mode
+      document
+        .getElementById("loginModeSwitch")
+        .addEventListener("change", function () {
+          const isUser = this.checked;
+          document.getElementById("adminLogin").style.display = isUser
+            ? "none"
+            : "block";
+          document.getElementById("userLogin").style.display = isUser
+            ? "block"
+            : "none";
+
+          // Update the header and switch text
+          const loginHeader = document.getElementById("loginHeader");
+          const switchLabel = document.getElementById("switchLabel");
+
+          if (isUser) {
+            loginHeader.textContent = "Office Management Login";
+            switchLabel.textContent = "Switch to Admin Login";
+          } else {
+            loginHeader.textContent = "Admin Management Login";
+            switchLabel.textContent = "Switch to User Login";
+          }
+        });
+
+      // Admin Login
+      function login() {
+        const username = document.getElementById("username").value.trim();
+        const password = document.getElementById("password").value.trim();
+
+        if (username === "admin" && password === "123") {
+          localStorage.setItem("user", username);
+          sessionStorage.setItem("user", username);
+          window.location.href = "dashboard.html";
+        } else {
+          alert("Invalid credentials. Try admin / 123");
+        }
+      }
+
+      // Check phone number
+      function checkPhone() {
+        const number = document.getElementById("phoneNumber").value.trim();
+        if (!number.match(/^\d{10}$/)) {
+          alert("Enter a valid 10-digit number.");
+          return;
+        }
+
+        if (mockDatabase.includes(number)) {
+          document.getElementById("getOtpBtn").disabled = false;
+        } else {
+          alert("You are not a registered user. Please contact admin.");
+        }
+      }
+
+      // Send OTP
+      function sendOtp() {
+        generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
+        alert("Mock OTP sent: " + generatedOtp); // Replace this with Fast2SMS API call
+        new bootstrap.Modal(document.getElementById("otpModal")).show();
+      }
+
+      // Verify OTP
+      function verifyOtp() {
+        const enteredOtp = document.getElementById("otpInput").value.trim();
+        if (enteredOtp === generatedOtp) {
+          const phone = document.getElementById("phoneNumber").value.trim();
+          localStorage.setItem("user", phone);
+          sessionStorage.setItem("user", phone);
+          window.location.href = "dashboard.html";
+        } else {
+          alert("Incorrect OTP. Try again.");
+        }
+      }
+    </script>
+  </body>
 </html>

@@ -4,33 +4,31 @@
   <meta charset="UTF-8">
   <title>Applications | E-Office Management</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
+  
   <!-- Bootstrap & Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-
   <style>
     body, html {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: #f1f3f5;
+      background: #f8f9fa;
     }
 
     .header {
-  height: 70px;
-  background-color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 25px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  position: fixed;           /* 🔥 This makes it sticky */
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 999;              /* Ensure it stays above other elements */
-}
-
+      background-color: #fff;
+      height: 70px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+    }
 
     .header .logo-title {
       display: flex;
@@ -40,45 +38,6 @@
     .header .logo-title img {
       height: 60px;
       margin-right: 10px;
-    }
-
-    .header .user-profile {
-      position: relative;
-      cursor: pointer;
-    }
-
-    .profile-icon {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: right;
-    }
-
-    .profile-icon i {
-      font-size: 24px;
-      color: #333;
-    }
-
-    .user-role {
-      font-size: 12px;
-      color: gray;
-    }
-
-    .profile-dropdown {
-      position: absolute;
-      top: 60px;
-      right: 0;
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      width: 150px;
-      padding: 10px;
-      display: none;
-      z-index: 10;
-    }
-
-    .profile-dropdown.show {
-      display: block;
     }
 
     .sidebar {
@@ -98,9 +57,6 @@
       display: flex;
       align-items: center;
     }
-    .sidebar .nav-link i {
-      margin-right: 10px;
-    }
 
     .sidebar .nav-link:hover, .sidebar .nav-link.active {
       background: #495057;
@@ -113,171 +69,287 @@
       padding: 30px;
     }
 
-    .search-bar {
-      margin-bottom: 20px;
+    .stage-select {
+      border-radius: 6px;
+      padding: 5px 10px;
+      font-weight: bold;
     }
 
-    .application-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-}
+    .stage-received { background-color: #ffc107; color: black; }
+    .stage-in-progress { background-color: #17a2b8; color: white; }
+    .stage-reviewed { background-color: #007bff; color: white; }
+    .stage-completed { background-color: #28a745; color: white; }
 
-.application-card {
-  background: white;
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 15px;
-  box-shadow: 0px 2px 10px rgba(0,0,0,0.05);
-  flex: 0 0 48%;
-}
+    .search-bar {
+      max-width: 300px;
+    }
 
-.stage-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 10px;
-}
+    .lang-select {
+      max-width: 150px;
+    }
 
-.stage-select {
-  min-width: 160px;
-  border: none;
-  color: white;
-  font-weight: bold;
-  padding: 6px 12px;
-  border-radius: 6px;
-}
-
-.stage-received { background-color: #ffc107; color: black; }      /* Blue */
-.stage-in-progress { background-color: #17a2b8; color: white; }   /* Orange */
-.stage-reviewed { background-color: #007bff; color: white; }     /* Yellow */
-.stage-completed { background-color: #28a745; color: white; }      /* Green */
-
+    table th, table td {
+      vertical-align: middle;
+    }
+    @media (max-width: 768px) {
+      .main-content {
+        margin-left: 0;
+        padding: 20px;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
   </style>
 </head>
 <body>
 
-<!-- HEADER -->
+<!-- Header -->
 <div class="header">
-  <div class="logo-title">
-    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYiFdEW56wVH-LUuoUp7CmFzybzsFrSKDAOg&s" alt="Logo">
-    <h5 class="mb-0">E-Office Management</h5>
+  <div class="d-flex align-items-center">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYiFdEW56wVH-LUuoUp7CmFzybzsFrSKDAOg&s" height="50" class="me-2" />
+    <h5 class="mb-0" data-translate="dashboardTitle">E-Office Management</h5>
   </div>
-  <div class="user-profile" onclick="toggleDropdown()">
-    <div class="profile-icon">
-      <i class="bi bi-person-circle"></i>
-      <span class="user-role">Admin</span>
-    </div>
-    <div class="profile-dropdown" id="profileDropdown">
-      <button class="btn btn-outline-danger w-100" onclick="logout()">Logout</button>
+  <div class="d-flex align-items-center gap-3">
+    <select id="languageSelect" class="form-select form-select-sm">
+      <option value="en" data-translate="English">English</option>
+      <option value="hi" data-translate="हिन्दी">हिन्दी</option>
+      <option value="mr" data-translate="मराठी">मराठी</option>
+    </select>
+    <div class="dropdown">
+      <i class="bi bi-person-circle fs-3" data-bs-toggle="dropdown" style="cursor: pointer;"></i>
+      <ul class="dropdown-menu dropdown-menu-end">
+        <!-- <li><a class="dropdown-item" href="#">Profile</a></li> -->
+      <li><a class="dropdown-item" href="#" id="logoutBtn">Logout</a></li>
+      </ul>
     </div>
   </div>
 </div>
 
 <!-- SIDEBAR -->
 <div class="sidebar">
-  <a href="dashboard.html" class="nav-link"><i class="bi bi-house-door-fill"></i> Dashboard</a>
-  <!-- <a href="#" class="nav-link"><i class="bi bi-person-plus-fill"></i> Add Visitor</a> -->
-  <a href="applications.html" class="nav-link active"><i class="bi bi-folder-fill"></i> Applications</a>
-  <!-- <a href="#" class="nav-link"><i class="bi bi-gear-fill"></i> Settings</a> -->
+  <a href="dashboard.html" class="nav-link d-flex align-items-center ">
+    <i class="bi bi-house-door-fill me-2 fs-5"></i> 
+    <span data-translate="dashboard">Dashboard</span>
+  </a>
+  <a href="adduser.html" class="nav-link d-flex align-items-center">
+    <i class="bi bi-person-plus-fill me-2 fs-5"></i> 
+    <span data-translate="addUser">Add User</span>
+  </a>
+  <a href="applicationform.html" class="nav-link d-flex align-items-center ">
+    <i class="bi bi-folder-fill me-2 fs-5 "></i> 
+    <span data-translate="applicationForm">Application Form</span>
+  </a>
+  <a href="applications.html" class="nav-link d-flex align-items-center active">
+    <i class="bi bi-file-earmark-text me-2 fs-5"></i> 
+    <span data-translate="applications">Applications</span>
+  </a>
 </div>
 
 <!-- MAIN CONTENT -->
 <div class="main-content">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h4>Submitted Applications</h4>
-    <input id="searchInput" type="text" class="form-control search-bar" style="max-width: 300px;" placeholder="Search by Application ID or Phone...">
+  <div class="d-flex justify-content-between mb-3">
+    <h4 data-translate="submittedApplications">Submitted Applications</h4>
+    <input type="text" id="searchInput" class="form-control search-bar" data-translate="searchPlaceholder" placeholder="Search by ID or Phone...">
   </div>
 
-  <div id="applicationsList"></div>
+   <!-- Filter Options -->
+   <div class="row mb-3">
+    <div class="col">
+      <select id="applicationTypeFilter" class="form-select">
+        <option value="">Select Application Type</option>
+        <option>General</option>
+        <option>VIP</option>
+        <option>VIP 1</option>
+        <option>VIP 2</option>
+        <option>VIP 3</option>
+        <!-- Add up to VIP 20+ -->
+        <option>VIP 20</option>
+        <option>VIP 21</option>
+        <option>VIP 22</option>
+      </select>
+    </div>
+    <div class="col">
+      <select id="departmentFilter" class="form-select">
+        <option value="">Select Department</option>
+        <option data-translate="education">Education</option>
+                <option data-translate="health">Health</option>
+                <option data-translate="publicWorks">Public Works</option>
+                <option data-translate="selfConstituency">Self Constituency</option>
+      </select>
+    </div>
+    <div class="col">
+      <input type="date" id="dateFilter" class="form-control" />
+    </div>
+  </div>
+
+
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover align-middle text-center">
+      <thead class="table-dark">
+        <tr>
+          <th data-translate="serialNo">S. No.</th>
+          <th data-translate="applicationId">Application ID</th>
+          <th data-translate="name">Name</th>
+          <th data-translate="phone">Phone</th>
+          <th data-translate="address">Address</th>
+          <th data-translate="category">Category</th>
+          <th data-translate="applicationType">Type of Application</th>
+          <th data-translate="department">Department</th>
+          <th data-translate="submittedOn">Submitted On</th>
+          <th data-translate="address">address</th>
+          <th data-translate="stage">Stage</th>
+          <th data-translate="updatedBy">Updated By</th>
+          <th data-translate="updatedAt">Updated At</th>
+        </tr>
+      </thead>
+      <tbody id="applicationTableBody">
+        <!-- Populated by JavaScript -->
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <script>
-  function toggleDropdown() {
-    const dropdown = document.getElementById('profileDropdown');
-    dropdown.classList.toggle('show');
-  }
+  const stages = ["Received", "In Progress", "Reviewed", "Completed"];
+  const stageClasses = {
+    "Received": "stage-received",
+    "In Progress": "stage-in-progress",
+    "Reviewed": "stage-reviewed",
+    "Completed": "stage-completed"
+  };
+
+  const username = "Admin"; // Simulate logged-in user
 
   function logout() {
     window.location.href = 'index.html';
   }
 
-  document.addEventListener('click', function(event) {
-    const profile = document.querySelector('.user-profile');
-    const dropdown = document.getElementById('profileDropdown');
-    if (!profile.contains(event.target)) {
-      dropdown.classList.remove('show');
-    }
-  });
-
-  // Load and render applications
-  const stages = ["Received", "In Progress", "Reviewed", "Completed"];
-
-  function renderApplications(filter = "") {
-  const container = document.getElementById("applicationsList");
-  container.innerHTML = "";
-
-  const apps = JSON.parse(localStorage.getItem("applications") || "[]");
-
-  const filtered = apps.filter(app => 
-    app.id.toLowerCase().includes(filter.toLowerCase()) ||
-    app.phone.toLowerCase().includes(filter.toLowerCase())
-  );
-
-  if (filtered.length === 0) {
-    container.innerHTML = "<p>No applications found.</p>";
-    return;
-  }
-
-  const rowDiv = document.createElement("div");
-  rowDiv.className = "application-row";
-
-  filtered.forEach((app, index) => {
-    const div = document.createElement("div");
-    div.className = "application-card";
-
-    const stageClass = {
-      "Received": "stage-received",
-      "In Progress": "stage-in-progress",
-      "Reviewed": "stage-reviewed",
-      "Completed": "stage-completed"
-    }[app.stage] || "stage-received";
-
-    div.innerHTML = `
-      <h5>Application ID: ${app.id}</h5>
-      <p><strong>Name:</strong> ${app.name}</p>
-      <p><strong>Phone:</strong> ${app.phone}</p>
-      <p><strong>Address:</strong> ${app.address}</p>
-      <p><strong>Category:</strong> ${app.category}</p>
-      <p><strong>Department:</strong> ${app.department}</p>
-      <p><strong>Submitted On:</strong> ${app.createdAt}</p>
-      <div class="stage-wrapper">
-        <label><strong>Stage:</strong></label>
-        <select class="stage-select ${stageClass}" onchange="updateStage(${index}, this.value)">
-          ${stages.map(stage => `<option value="${stage}" ${stage === app.stage ? 'selected' : ''}>${stage}</option>`).join('')}
-        </select>
-      </div>
-    `;
-
-    rowDiv.appendChild(div);
-  });
-
-  container.appendChild(rowDiv);
+  function formatDate(datetime) {
+  // Convert "23/04/2025, 13:14:39" to "2025-04-23"
+  const parts = datetime.split(",")[0].split("/");
+  const [day, month, year] = parts;
+  return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
 }
 
 
-  function updateStage(index, newStage) {
-    const apps = JSON.parse(localStorage.getItem("applications") || "[]");
-    apps[index].stage = newStage;
-    localStorage.setItem("applications", JSON.stringify(apps));
-    renderApplications(document.getElementById("searchInput").value);
+  // Render table with filtering and search
+  function renderTable() {
+    const data = JSON.parse(localStorage.getItem("applications") || "[]");
+    const tbody = document.getElementById("applicationTableBody");
+    const searchInput = document.getElementById("searchInput").value.toLowerCase();
+
+    // Get filter values
+    const applicationTypeFilter = document.getElementById("applicationTypeFilter").value.toLowerCase();
+    const departmentFilter = document.getElementById("departmentFilter").value.toLowerCase();
+    const dateFilter = document.getElementById("dateFilter").value;
+
+    tbody.innerHTML = ``;
+
+    // Filter the data based on search input and filters
+    const filtered = data.filter(app => {
+  const isMatchingSearch = app.id.toLowerCase().includes(searchInput) || app.phone.toLowerCase().includes(searchInput);
+  const isMatchingType = !applicationTypeFilter || app.applicationType.toLowerCase().includes(applicationTypeFilter);
+  const isMatchingDepartment = !departmentFilter || app.department.toLowerCase().includes(departmentFilter);
+  const isMatchingDate = !dateFilter || formatDate(app.createdAt) === dateFilter;
+
+  return isMatchingSearch && isMatchingType && isMatchingDepartment && isMatchingDate;
+});
+
+
+    if (filtered.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="11" class="text-muted">No applications found.</td></tr>`;
+      return;
+    }
+
+    // Loop through filtered applications and display them
+    filtered.forEach((app, index) => {
+      const tr = document.createElement("tr");
+
+      const stageClass = stageClasses[app.stage] || "stage-received";
+
+      tr.innerHTML = `
+        <td>${index + 1}</td>
+        <td>${app.id}</td>
+        <td>${app.name}</td>
+        <td>${app.phone}</td>
+        <td>${app.address}</td>
+        <td>${app.category}</td>
+        <td>${app.applicationType}</td>
+        <td>${app.department}</td>
+        <td>${app.createdAt}</td>
+        <td>${app.address}</td>
+        <td>
+          <select class="form-select ${stageClass}" onchange="updateStage(${app.index}, this.value)">
+            ${stages.map(stage => `<option value="${stage}" ${stage === app.stage ? "selected" : ""}>${stage}</option>`).join("")}
+          </select>
+        </td>
+        <td>${app.updatedBy || "-"}</td>
+        <td>${app.updatedAt || "-"}</td>
+      `;
+
+      tbody.appendChild(tr);
+    });
   }
 
-  document.getElementById("searchInput").addEventListener("input", function() {
-    renderApplications(this.value);
-  });
+  // Update the stage of an application
+  function updateStage(index, newStage) {
+    const data = JSON.parse(localStorage.getItem("applications") || "[]");
+    const app = data.find(a => a.index === index);
 
-  renderApplications(); // Initial call
+    if (app) {
+      app.stage = newStage;
+      app.updatedBy = username;
+      app.updatedAt = new Date().toLocaleString();
+      localStorage.setItem("applications", JSON.stringify(data));
+      renderTable();
+    }
+  }
+
+  // On page load
+  document.addEventListener("DOMContentLoaded", () => {
+    const data = JSON.parse(localStorage.getItem("applications") || "[]");
+    data.forEach((app, i) => app.index = i);
+    localStorage.setItem("applications", JSON.stringify(data));
+    renderTable();
+
+    // Add event listeners for search input and filters
+    document.getElementById("searchInput").addEventListener("input", renderTable);
+    document.getElementById("applicationTypeFilter").addEventListener("change", renderTable);
+    document.getElementById("departmentFilter").addEventListener("change", renderTable);
+    document.getElementById("dateFilter").addEventListener("change", renderTable);
+  });
 </script>
+<script src="Assets/Language/i18n.js"></script>
+<script>
+  // Redirect to login if user is not logged in
+  if (!localStorage.getItem("user")) {
+    window.location.href = "index.html";
+  }
+
+  // Disable back button after logout
+  window.history.pushState(null, "", window.location.href);
+  window.onpopstate = function () {
+    window.history.pushState(null, "", window.location.href);
+  };
+</script>
+
+<script>
+  document.getElementById("logoutBtn").addEventListener("click", function (e) {
+    e.preventDefault();
+
+    // Clear any session/local storage if needed
+    localStorage.clear();
+    sessionStorage.clear();
+
+    // Redirect to login page
+    window.location.href = "index.html"; // Replace with your actual login page
+  });
+</script>
+<!-- Bootstrap JS (required for dropdowns) -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+
 </body>
 </html>
