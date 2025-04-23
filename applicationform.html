@@ -240,6 +240,21 @@
       const randomId = 'APP' + Math.floor(1000 + Math.random() * 9000);
       document.getElementById('appId').value = randomId;
     });
+
+    document.addEventListener("DOMContentLoaded", () => {
+  // Set current date and time by default
+  const currentDate = new Date().toISOString().split('T')[0]; // Get current date in YYYY-MM-DD format
+  const currentTime = new Date().toTimeString().split(' ')[0].substring(0, 5); // Get current time in HH:MM format
+
+  // Set the value of the date and time input fields
+  document.getElementById('date').value = currentDate;
+  document.getElementById('time').value = currentTime;
+
+  // Set application ID
+  const randomId = 'APP' + Math.floor(1000 + Math.random() * 9000);
+  document.getElementById('appId').value = randomId;
+});
+
   
     document.getElementById('appForm').addEventListener('submit', function (e) {
       e.preventDefault();
