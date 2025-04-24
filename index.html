@@ -36,6 +36,23 @@
         width: 80%;
         max-width: 400px;
       }
+      @media (max-width: 768px) {
+      .login-container {
+        flex-direction: column;
+      }
+
+      .login-img {
+        height: 350px; /* Adjust as needed */
+        flex: none;
+        width: 100%;
+      }
+
+      .login-form {
+        flex: none;
+        width: 100%;
+      }
+    }
+
     </style>
   </head>
   <body>
@@ -89,11 +106,10 @@
                 class="form-control"
                 id="phoneNumber"
                 placeholder="Enter your registered phone number"
+                maxlength="10"
               />
+              <div id="phoneError" class="text-danger mt-1" style="font-size: 0.9rem;"></div>
             </div>
-            <button class="btn btn-warning w-100 mb-2" onclick="checkPhone()">
-              Check Number
-            </button>
             <button
               class="btn btn-success w-100"
               id="getOtpBtn"
@@ -183,20 +199,29 @@
         }
       }
 
-      // Check phone number
-      function checkPhone() {
-        const number = document.getElementById("phoneNumber").value.trim();
-        if (!number.match(/^\d{10}$/)) {
-          alert("Enter a valid 10-digit number.");
-          return;
-        }
+      // Real-time phone validation
+      document.getElementById("phoneNumber").addEventListener("input", function () {
+        const number = this.value.trim();
+        const errorDiv = document.getElementById("phoneError");
+        const otpBtn = document.getElementById("getOtpBtn");
 
-        if (mockDatabase.includes(number)) {
-          document.getElementById("getOtpBtn").disabled = false;
+        if (number.length === 10) {
+          if (!number.match(/^\d{10}$/)) {
+            errorDiv.textContent = "Please enter only numeric digits.";
+            otpBtn.disabled = true;
+          } else if (!mockDatabase.includes(number)) {
+            errorDiv.textContent = "You are not a registered user. Please contact admin.";
+            otpBtn.disabled = true;
+          } else {
+            errorDiv.textContent = "";
+            otpBtn.disabled = false;
+          }
         } else {
-          alert("You are not a registered user. Please contact admin.");
+          errorDiv.textContent = number.length > 0 ? "Enter a 10-digit number." : "";
+          otpBtn.disabled = true;
         }
-      }
+      });
+
 
       // Send OTP
       function sendOtp() {
