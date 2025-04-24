@@ -185,7 +185,7 @@
 <div class="main-content">
   <div class="form-section">
     <div class="form-title" data-translate="add_new_user">Add New User</div>
-    <form>
+    <form id="addUserForm">
       <div class="mb-3">
         <label for="userName" class="form-label" data-translate="name">Name</label>
         <input type="text" class="form-control" id="userName" required>
@@ -220,18 +220,7 @@
         </tr>
       </thead>
       <tbody id="userTable">
-        <tr>
-          <td>John Doe</td>
-          <td data-translate="minister">Minister</td>
-          <td>9876543210</td>
-          <td>2025-04-22 09:00 AM</td>
-          <td>2025-04-22 06:00 PM</td>
-          <td data-translate="viewed_dashboard_added_application">Viewed Dashboard, Added Application</td>
-          <td>
-            <button class="btn btn-sm btn-warning" onclick="showPinModal('edit')" title="Edit"><i class="bi bi-pencil"></i></button>
-            <button class="btn btn-sm btn-danger" onclick="showPinModal('delete')" title="Delete"><i class="bi bi-trash"></i></button>
-          </td>
-        </tr>
+        <!-- Dynamically loaded rows -->
       </tbody>
     </table>
   </div>
@@ -259,7 +248,7 @@
 <!-- Edit Modal -->
 <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog">
-    <form class="modal-content">
+    <form class="modal-content" id="editUserForm">
       <div class="modal-header bg-primary text-white">
         <h5 class="modal-title" data-translate="edit_user">Edit User</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -267,11 +256,11 @@
       <div class="modal-body">
         <div class="mb-3">
           <label for="editName" class="form-label" data-translate="name">Name</label>
-          <input type="text" class="form-control" id="editName">
+          <input type="text" class="form-control" id="editName" required>
         </div>
         <div class="mb-3">
           <label for="editRole" class="form-label" data-translate="role">Role</label>
-          <select class="form-select" id="editRole">
+          <select class="form-select" id="editRole" required>
             <option data-translate="minister">Minister</option>
             <option data-translate="ps_minister">P.S to Minister</option>
             <option data-translate="osd">OSD</option>
@@ -280,7 +269,7 @@
         </div>
         <div class="mb-3">
           <label for="editMobile" class="form-label" data-translate="mobile_number">Mobile Number</label>
-          <input type="text" class="form-control" id="editMobile" maxlength="10">
+          <input type="tel" class="form-control" id="editMobile" maxlength="10" pattern="[0-9]{10}" required>
         </div>
       </div>
       <div class="modal-footer">
@@ -289,6 +278,18 @@
     </form>
   </div>
 </div>
+
+
+<!-- Success Modal -->
+<div class="modal fade" id="showSuccessModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content text-center p-4">
+      <img src="Assets/Images/3271ae6c-23a0-498a-ac89-0dedd0127192.jpg" width="60" alt="Success" />
+      <h5 id="successText" class="mt-3">Success!</h5>
+    </div>
+  </div>
+</div>
+
 
   
   
@@ -316,100 +317,10 @@
   
 </script>
 <script>
-    let selectedAction = "";
-    let selectedUserIndex = null;
   
-    // Load users from localStorage and render the table
-    function loadUsers() {
-      const users = JSON.parse(localStorage.getItem("users")) || [];
-      const userTable = document.getElementById("userTable");
-      userTable.innerHTML = "";
-  
-      users.forEach((user, index) => {
-        const row = `
-          <tr>
-            <td>${user.name}</td>
-            <td>${user.role}</td>
-            <td>${user.mobile}</td>
-            
-            <td>
-              <button class="btn btn-sm btn-warning" onclick="showPinModal('edit', ${index})"><i class="bi bi-pencil"></i></button>
-              <button class="btn btn-sm btn-danger" onclick="showPinModal('delete', ${index})"><i class="bi bi-trash"></i></button>
-            </td>
-          </tr>
-        `;
-        userTable.insertAdjacentHTML("beforeend", row);
-      });
-    }
-  
-    // Save user from form
-    document.querySelector("form").addEventListener("submit", function (e) {
-      e.preventDefault();
-      const name = document.getElementById("userName").value;
-      const role = document.getElementById("userRole").value;
-      const mobile = document.getElementById("userMobile").value;
-  
-      const users = JSON.parse(localStorage.getItem("users")) || [];
-      users.push({ name, role, mobile, lastLogin: "-", lastLogout: "-", logs: "-" });
-      localStorage.setItem("users", JSON.stringify(users));
-  
-      e.target.reset();
-      loadUsers();
-    });
-  
-    function showPinModal(action, index) {
-      selectedAction = action;
-      selectedUserIndex = index;
-      document.getElementById("pinInput").value = "";
-      new bootstrap.Modal(document.getElementById("pinModal")).show();
-    }
-  
-    document.getElementById("pinForm").addEventListener("submit", function (e) {
-      e.preventDefault();
-      const pin = document.getElementById("pinInput").value;
-      const users = JSON.parse(localStorage.getItem("users")) || [];
-  
-      if (pin === "9098") {
-        bootstrap.Modal.getInstance(document.getElementById("pinModal")).hide();
-  
-        if (selectedAction === "edit") {
-          const user = users[selectedUserIndex];
-          document.getElementById("editName").value = user.name;
-          document.getElementById("editRole").value = user.role;
-          document.getElementById("editMobile").value = user.mobile;
-          new bootstrap.Modal(document.getElementById("editModal")).show();
-        } else if (selectedAction === "delete") {
-          users.splice(selectedUserIndex, 1);
-          localStorage.setItem("users", JSON.stringify(users));
-          loadUsers();
-          alert("User deleted successfully!");
-        }
-      } else {
-        alert("Incorrect PIN!");
-      }
-    });
-  
-    // Save edited user
-    document.querySelector("#editModal form").addEventListener("submit", function (e) {
-      e.preventDefault();
-      const users = JSON.parse(localStorage.getItem("users")) || [];
-  
-      users[selectedUserIndex] = {
-        ...users[selectedUserIndex],
-        name: document.getElementById("editName").value,
-        role: document.getElementById("editRole").value,
-        mobile: document.getElementById("editMobile").value
-      };
-  
-      localStorage.setItem("users", JSON.stringify(users));
-      bootstrap.Modal.getInstance(document.getElementById("editModal")).hide();
-      loadUsers();
-      alert("User updated successfully!");
-    });
-  
-    // Load users on page load
-    document.addEventListener("DOMContentLoaded", loadUsers);
-  </script>
+</script>
+
+<script src="Apis/userApi.js"></script>
   
   
 <script src="Assets/Language/i18n.js"></script>
