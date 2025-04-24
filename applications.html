@@ -100,6 +100,30 @@
         display: none;
       }
     }
+    .sidebar.mobile-show {
+        display: block !important;
+        z-index: 1050;
+        position: fixed;
+        left: 0;
+        top: 70px;
+        height: calc(100% - 70px);
+        width: 220px;
+        background-color: #343a40;
+        transition: transform 0.3s ease-in-out;
+      }
+      .overlay {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        height: calc(100% - 70px);
+        background-color: rgba(0, 0, 0, 0.4);
+        z-index: 1040;
+        display: none;
+      }
+      .overlay.show {
+        display: block;
+      }
   </style>
 </head>
 <body>
@@ -123,6 +147,13 @@
       <li><a class="dropdown-item" href="#" id="logoutBtn">Logout</a></li>
       </ul>
     </div>
+    <!-- Menu button (only visible on small screens) -->
+    <button
+    class="btn btn-outline-secondary d-md-none me-2"
+    id="menuToggle"
+  >
+    <i class="bi bi-list fs-4"></i>
+  </button>
   </div>
 </div>
 
@@ -149,6 +180,8 @@
     <span data-translate="categoryManagement">Category Management</span>
   </a>
 </div>
+
+<div id="sidebarOverlay" class="overlay"></div>
 
 <!-- MAIN CONTENT -->
 <div class="main-content">
@@ -348,6 +381,21 @@
 
     // Redirect to login page
     window.location.href = "index.html"; // Replace with your actual login page
+  });
+</script>
+<script>
+  const menuToggle = document.getElementById("menuToggle");
+  const sidebar = document.querySelector(".sidebar");
+  const overlay = document.getElementById("sidebarOverlay");
+
+  menuToggle.addEventListener("click", () => {
+    sidebar.classList.toggle("mobile-show");
+    overlay.classList.toggle("show");
+  });
+
+  overlay.addEventListener("click", () => {
+    sidebar.classList.remove("mobile-show");
+    overlay.classList.remove("show");
   });
 </script>
 <!-- Bootstrap JS (required for dropdowns) -->
