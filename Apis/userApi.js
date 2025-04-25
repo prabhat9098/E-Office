@@ -6,14 +6,22 @@ const API_URL = "https://eoffice.riddleescape.in/users/user.php";
   async function fetchUsers() {
     try {
       const response = await fetch(API_URL);
-      const data = await response.json();
-      return Array.isArray(data) ? data : [];
+      const result = await response.json();
+  
+      // Check if result is valid and contains a 'data' array
+      if (result.success && Array.isArray(result.data)) {
+        return result.data;
+      } else {
+        console.warn("Unexpected API response structure:", result);
+        return [];
+      }
     } catch (error) {
       console.error("Error fetching users:", error);
       alert("Error fetching users. Please try again later.");
       return [];
     }
   }
+  
 
   async function loadUsers() {
     const users = await fetchUsers();
@@ -103,7 +111,7 @@ const API_URL = "https://eoffice.riddleescape.in/users/user.php";
     if (result?.success) {
       bootstrap.Modal.getInstance(document.getElementById("editModal")).hide();
       await loadUsers();
-      showSuccessModal(result.message || "User added successfully!");
+      showSuccessModal(result.message || "User Updates successfully!");
     } else {
       alert(result?.message || "Error adding user.");
     }
@@ -134,7 +142,7 @@ const API_URL = "https://eoffice.riddleescape.in/users/user.php";
   async function createUser(user) {
     try {
       const formData = new FormData();
-      formData.append("action", "create");
+      
       formData.append("name", user.name);
       formData.append("role", user.role);
       formData.append("mobile_number", user.mobile);
@@ -149,13 +157,20 @@ const API_URL = "https://eoffice.riddleescape.in/users/user.php";
 
   async function updateUser(user) {
     try {
-      const formData = new FormData();
-      formData.append("action", "update");
-      formData.append("id", user.id);
-      formData.append("name", user.name);
-      formData.append("role", user.role);
-      formData.append("mobile_number", user.mobile);
-      const res = await fetch(API_URL, { method: "POST", body: formData });
+      const params = new URLSearchParams();
+      params.append("name", user.name);
+      params.append("role", user.role);
+      params.append("mobile_number", user.mobile);
+  
+      const urlWithId = `${API_URL}?id=${user.id}`;
+      const res = await fetch(urlWithId, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: params.toString(),
+      });
+  
       return await res.json();
     } catch (err) {
       console.error("Error updating user:", err);
@@ -163,13 +178,15 @@ const API_URL = "https://eoffice.riddleescape.in/users/user.php";
       return null;
     }
   }
+  
 
   async function deleteUser(id) {
     try {
       const formData = new FormData();
       formData.append("action", "delete");
-      formData.append("id", id);
-      const res = await fetch(API_URL, { method: "POST", body: formData });
+  
+      const urlWithId = `${API_URL}?id=${id}`;
+      const res = await fetch(urlWithId, { method: "DELETE", body: formData });
       return await res.json();
     } catch (err) {
       console.error("Error deleting user:", err);
@@ -177,6 +194,7 @@ const API_URL = "https://eoffice.riddleescape.in/users/user.php";
       return null;
     }
   }
+  
 
   // Load data on page load
   document.addEventListener("DOMContentLoaded", function () {
