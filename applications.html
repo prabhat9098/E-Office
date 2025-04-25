@@ -179,6 +179,10 @@
     <i class="bi bi-tags-fill me-2 fs-5"></i> 
     <span data-translate="categoryManagement">Category Management</span>
   </a>
+  <a href="userdata.html" class="nav-link d-flex align-items-center">
+    <i class="bi bi-folder-fill me-2 fs-5"></i>
+    <span data-translate="user_data">User Data</span>
+  </a>
 </div>
 
 <div id="sidebarOverlay" class="overlay"></div>
@@ -194,7 +198,7 @@
    <div class="row mb-3">
     <div class="col">
       <select id="applicationTypeFilter" class="form-select">
-        <option value="">Select Application Type</option>
+        <option data-translate="select_applicant_type" value="">Select Applicant Type</option>
         <option>General</option>
         <option>VIP</option>
         <option>VIP 1</option>
@@ -208,7 +212,7 @@
     </div>
     <div class="col">
       <select id="departmentFilter" class="form-select">
-        <option value="">Select Department</option>
+        <option data-translate="select_department" value="">Select Department</option>
         <option data-translate="education">Education</option>
                 <option data-translate="health">Health</option>
                 <option data-translate="publicWorks">Public Works</option>
@@ -231,6 +235,7 @@
           <th data-translate="name">Name</th>
           <th data-translate="phone">Phone</th>
           <th data-translate="address">Address</th>
+          <th data-translate="subject">Subject</th>
           <th data-translate="category">Category</th>
           <th data-translate="applicationType">Type of Application</th>
           <th data-translate="department">Department</th>
@@ -311,6 +316,7 @@
         <td>${app.name}</td>
         <td>${app.phone}</td>
         <td>${app.address}</td>
+        <td>${app.subject}</td>
         <td>${app.category}</td>
         <td>${app.applicationType}</td>
         <td>${app.department}</td>
