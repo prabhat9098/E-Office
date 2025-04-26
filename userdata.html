@@ -264,6 +264,17 @@
       topCityEl.textContent = topCity;
     }
 
+    menuToggle.addEventListener("click", () => {
+  sidebar.classList.toggle("mobile-show");
+  overlay.classList.toggle("show");
+});
+
+overlay.addEventListener("click", () => {
+  sidebar.classList.remove("mobile-show");
+  overlay.classList.remove("show");
+});
+
+
     function applyFilters() {
       const nameVal = filterName.value.toLowerCase();
       const contactVal = filterContact.value;
