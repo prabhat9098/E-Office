@@ -306,5 +306,42 @@ overlay.addEventListener("click", () => {
     renderTable(users);
     updateStats(users);
   </script>
+  <script>
+      // Redirect to login if user is not logged in
+      if (!localStorage.getItem("user")) {
+        window.location.href = "index.html";
+      }
+
+      // Disable back button after logout
+      window.history.pushState(null, "", window.location.href);
+      window.onpopstate = function () {
+        window.history.pushState(null, "", window.location.href);
+      };
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const userType = localStorage.getItem("usertype");
+    
+        // Check if usertype is 'User'
+        if (userType === "user") {
+          // Redirect to error page
+          window.location.href = "error.html";  // Redirect to error page
+        }
+      });
+    </script>
+     <script>
+      document
+        .getElementById("logoutBtn")
+        .addEventListener("click", function (e) {
+          e.preventDefault();
+
+          // Clear any session/local storage if needed
+          localStorage.clear();
+          sessionStorage.clear();
+
+          // Redirect to login page
+          window.location.href = "index.html"; // Replace with your actual login page
+        });
+    </script>
 </body>
 </html>

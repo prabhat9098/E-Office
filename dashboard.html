@@ -163,6 +163,7 @@
         <i class="bi bi-person-plus-fill me-2 fs-5"></i>
         <span data-translate="addUser">Add User</span>
       </a>
+      
       <a href="applicationform.html" class="nav-link d-flex align-items-center">
         <i class="bi bi-file-earmark-text me-2 fs-5"></i>
         <span data-translate="applicationForm">Application Form</span>
@@ -175,6 +176,7 @@
         <i class="bi bi-tags-fill me-2 fs-5"></i>
         <span data-translate="categoryManagement">Category Management</span>
       </a>
+      
       <a href="userdata.html" class="nav-link d-flex align-items-center">
         <i class="bi bi-folder-fill me-2 fs-5"></i>
         <span data-translate="user_data">User Data</span>
@@ -326,6 +328,19 @@
           window.location.href = "index.html"; // Replace with your actual login page
         });
     </script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const userType = localStorage.getItem("usertype");
+
+    // Check if usertype is 'User'
+    if (userType === "user") {
+      // Redirect to error page
+      window.location.href = "error.html";  // Redirect to error page
+    }
+  });
+</script>
+
 
     <script src="Assets/Language/i18n.js"></script>
   </body>

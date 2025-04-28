@@ -420,6 +420,19 @@
       });
     </script>
 
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const userType = localStorage.getItem("usertype");
+
+    // Check if usertype is 'User'
+    if (userType === "user") {
+      // Redirect to error page
+      window.location.href = "error.html";  // Redirect to error page
+    }
+  });
+</script>
+
     <script src="Assets/Language/i18n.js"></script>
+    
   </body>
 </html>

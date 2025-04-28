@@ -43,6 +43,7 @@ function showToast(message, type = "info") {
           showToast("Login successful!", "success");
           setTimeout(() => {
             localStorage.setItem("user", email);
+            localStorage.setItem("usertype", "admin"); // <-- Add this line
             sessionStorage.setItem("admin_id", data.admin_id);
             window.location.href = "dashboard.html";
           }, 1500);
@@ -55,6 +56,7 @@ function showToast(message, type = "info") {
         showToast("Something went wrong. Please try again later.", "error");
       });
   }
+  
   
   // Make it globally accessible
   window.adminLogin = adminLogin;

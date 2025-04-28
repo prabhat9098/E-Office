@@ -148,31 +148,14 @@
 
 <!-- SIDEBAR -->
 <div class="sidebar">
-    <a href="dashboard.html" class="nav-link d-flex align-items-center ">
-      <i class="bi bi-house-door-fill me-2 fs-5"></i> 
-      <span data-translate="dashboard">Dashboard</span>
-    </a>
-    <a href="adduser.html" class="nav-link d-flex align-items-center">
-      <i class="bi bi-person-plus-fill me-2 fs-5"></i> 
-      <span data-translate="addUser">Add User</span>
-    </a>
-    <a href="applicationform.html" class="nav-link d-flex align-items-center active">
+    <a href="UserTypeApplicationform.html" class="nav-link d-flex align-items-center active">
       <i class="bi bi-file-earmark-text me-2 fs-5 "></i> 
       <span data-translate="applicationForm">Application Form</span>
     </a>
-    <a href="applications.html" class="nav-link d-flex align-items-center">
+    <a href="UserTypeApplications.html" class="nav-link d-flex align-items-center">
       <i class="bi bi-folder-fill me-2 fs-5"></i> 
       <span data-translate="applications">Applications</span>
-    </a>
-    <a href="CategoryManagement.html" class="nav-link d-flex align-items-center">
-      <i class="bi bi-tags-fill me-2 fs-5"></i> 
-      <span data-translate="categoryManagement">Category Management</span>
-    </a>
-    
-    <a href="userdata.html" class="nav-link d-flex align-items-center">
-      <i class="bi bi-folder-fill me-2 fs-5"></i>
-      <span data-translate="user_data">User Data</span>
-    </a>    
+    </a>   
   </div>
 
   <div id="sidebarOverlay" class="overlay"></div>
@@ -303,38 +286,7 @@
 
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script type="module">
-  import statesAndCities from './Services/statesAndCities.js'; // Adjust path if needed
 
-  // Populate State dropdown dynamically
-  console.log(statesAndCities);  // Check if the object is loaded correctly
-
-  const stateDropdown = document.getElementById('state');
-  Object.keys(statesAndCities).forEach(state => {
-    const option = document.createElement('option');
-    option.value = state;
-    option.textContent = state;
-    stateDropdown.appendChild(option);
-  });
-
-  // Populate City dropdown based on selected state
-  const cityDropdown = document.getElementById('city');
-  stateDropdown.addEventListener('change', function() {
-    const selectedState = this.value;
-    const cities = statesAndCities[selectedState] || [];
-    
-    // Clear existing options in city dropdown
-    cityDropdown.innerHTML = '<option disabled selected>Select City</option>';
-
-    // Add cities to dropdown
-    cities.forEach(city => {
-      const option = document.createElement('option');
-      option.value = city;
-      option.textContent = city;
-      cityDropdown.appendChild(option);
-    });
-  });
-</script>
 
 
 <script>
@@ -404,6 +356,39 @@
   </script>
   
 <script src="Assets/Language/i18n.js"></script>
+
+<script type="module">
+    import statesAndCities from './Services/statesAndCities.js'; // Adjust path if needed
+  
+    // Populate State dropdown dynamically
+    console.log(statesAndCities);  // Check if the object is loaded correctly
+  
+    const stateDropdown = document.getElementById('state');
+    Object.keys(statesAndCities).forEach(state => {
+      const option = document.createElement('option');
+      option.value = state;
+      option.textContent = state;
+      stateDropdown.appendChild(option);
+    });
+  
+    // Populate City dropdown based on selected state
+    const cityDropdown = document.getElementById('city');
+    stateDropdown.addEventListener('change', function() {
+      const selectedState = this.value;
+      const cities = statesAndCities[selectedState] || [];
+      
+      // Clear existing options in city dropdown
+      cityDropdown.innerHTML = '<option disabled selected>Select City</option>';
+  
+      // Add cities to dropdown
+      cities.forEach(city => {
+        const option = document.createElement('option');
+        option.value = city;
+        option.textContent = city;
+        cityDropdown.appendChild(option);
+      });
+    });
+  </script>
 <script>
   // Redirect to login if user is not logged in
   if (!localStorage.getItem("user")) {
@@ -442,17 +427,6 @@
   overlay.addEventListener("click", () => {
     sidebar.classList.remove("mobile-show");
     overlay.classList.remove("show");
-  });
-</script>
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const userType = localStorage.getItem("usertype");
-
-    // Check if usertype is 'User'
-    if (userType === "user") {
-      // Redirect to error page
-      window.location.href = "error.html";  // Redirect to error page
-    }
   });
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>

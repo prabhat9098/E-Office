@@ -159,29 +159,14 @@
 
 <!-- SIDEBAR -->
 <div class="sidebar">
-  <a href="dashboard.html" class="nav-link d-flex align-items-center ">
-    <i class="bi bi-house-door-fill me-2 fs-5"></i> 
-    <span data-translate="dashboard">Dashboard</span>
   </a>
-  <a href="adduser.html" class="nav-link d-flex align-items-center">
-    <i class="bi bi-person-plus-fill me-2 fs-5"></i> 
-    <span data-translate="addUser">Add User</span>
-  </a>
-  <a href="applicationform.html" class="nav-link d-flex align-items-center ">
+  <a href="UserTypeApplicationform.html" class="nav-link d-flex align-items-center ">
     <i class="bi bi-file-earmark-text me-2 fs-5 "></i> 
     <span data-translate="applicationForm">Application Form</span>
   </a>
-  <a href="applications.html" class="nav-link d-flex align-items-center active">
+  <a href="UserTypeApplications.html" class="nav-link d-flex align-items-center active">
     <i class="bi bi-folder-fill me-2 fs-5"></i> 
     <span data-translate="applications">Applications</span>
-  </a>
-  <a href="CategoryManagement.html" class="nav-link d-flex align-items-center">
-    <i class="bi bi-tags-fill me-2 fs-5"></i> 
-    <span data-translate="categoryManagement">Category Management</span>
-  </a>
-  <a href="userdata.html" class="nav-link d-flex align-items-center">
-    <i class="bi bi-folder-fill me-2 fs-5"></i>
-    <span data-translate="user_data">User Data</span>
   </a>
 </div>
 
@@ -408,17 +393,6 @@
   overlay.addEventListener("click", () => {
     sidebar.classList.remove("mobile-show");
     overlay.classList.remove("show");
-  });
-</script>
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const userType = localStorage.getItem("usertype");
-
-    // Check if usertype is 'User'
-    if (userType === "user") {
-      // Redirect to error page
-      window.location.href = "error.html";  // Redirect to error page
-    }
   });
 </script>
 <!-- Bootstrap JS (required for dropdowns) -->

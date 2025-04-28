@@ -5,7 +5,7 @@ let generatedOtp = "";
 
 // Redirect if already logged in
 if (localStorage.getItem("user")) {
-  window.location.href = "dashboard.html";
+  window.location.href = "UserTypeApplicationform.html";
 }
 
 // Phone input validation
@@ -44,9 +44,11 @@ function verifyOtp() {
   if (enteredOtp === generatedOtp) {
     const phone = document.getElementById("phoneNumber").value.trim();
     localStorage.setItem("user", phone);
+    localStorage.setItem("usertype", "User"); // <-- Add this line
     sessionStorage.setItem("user", phone);
-    window.location.href = "dashboard.html";
+    window.location.href = "UserTypeApplicationform.html";
   } else {
     alert("Incorrect OTP. Try again.");
   }
 }
+
