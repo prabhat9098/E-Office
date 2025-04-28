@@ -221,9 +221,9 @@
 
         <!-- State Dropdown -->
       <div class="col-md-6">
-        <label class="form-label" data-translate="state">State</label>
+        <label class="form-label"  data-translate="state">State</label>
         <select class="form-select" id="state" required>
-          <option disabled selected>Select State</option>
+          <option disabled selected value="">Select State</option>
           <!-- States will be dynamically populated here -->
         </select>
       </div>
@@ -232,7 +232,7 @@
       <div class="col-md-6">
         <label class="form-label" data-translate="city">City</label>
         <select class="form-select" id="city" required>
-          <option disabled selected>Select City</option>
+          <option disabled selected value="">Select City</option>
           <!-- Cities will be dynamically populated here based on selected state -->
         </select>
       </div>
@@ -246,7 +246,7 @@
         <div class="col-md-6">
             <label class="form-label" data-translate="category">Category</label>
             <select class="form-select" id="category" required>
-                <option disabled selected >Select Category</option>
+                <option disabled selected value="" >Select Category</option>
                 <option data-translate="complaint">Complaint</option>
                 <option data-translate="request">Request</option>
                 <option data-translate="suggestion">Suggestion</option>
@@ -256,7 +256,7 @@
         <div class="col-md-6">
             <label class="form-label" data-translate="department">Department</label>
             <select class="form-select" id="department" required>
-                <option disabled selected ">Select Department</option>
+                <option disabled selected value="" >Select Department</option>
                 <option data-translate="education">Education</option>
                 <option data-translate="health">Health</option>
                 <option data-translate="publicWorks">Public Works</option>
@@ -267,7 +267,7 @@
         <div class="col-md-6">
           <label class="form-label" data-translate="applicationType">Application Type</label>
           <select class="form-select" id="applicationType" required>
-            <option disabled selected>Select Type</option>
+            <option disabled selected value="">Select Type</option>
             <option>General</option>
             <option>VIP</option>
             <option>VIP 1</option>
@@ -376,7 +376,7 @@
         category: document.getElementById("category").value,
         department: document.getElementById("department").value,
         applicationType: document.getElementById("applicationType")?.value || "",
-         attachment: document.getElementById("attachment").files[0]?.name || "No file uploaded",
+        attachment: document.getElementById("attachment").files[0]?.name || "No file uploaded",
         stage: "Received",
         createdAt: new Date().toLocaleString(),
         updatedBy: "",

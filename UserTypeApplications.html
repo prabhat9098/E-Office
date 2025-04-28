@@ -228,6 +228,7 @@
           <th data-translate="applicationType">Type of Application</th>
           <th data-translate="department">Department</th>
           <th data-translate="submittedOn">Submitted On</th>
+          <th data-translate="UploadedFile">Uploaded File</th>
           <th data-translate="stage">Stage</th>
           <th data-translate="updatedBy">Updated By</th>
           <th data-translate="updatedAt">Updated At</th>
@@ -312,6 +313,21 @@
         <td>${app.applicationType}</td>
         <td>${app.department}</td>
         <td>${app.createdAt}</td>
+        <td>
+              ${app.uploadedFile 
+                ? `<a href="${app.uploadedFile}" target="_blank" class="text-primary" title="View File">
+                    <i class="bi bi-paperclip fs-4"></i>
+                  </a>
+                  <br/>
+                  <a href="${app.uploadedFile}" download class="btn btn-sm btn-outline-success mt-1">
+                    Download
+                  </a>
+                  <button class="btn btn-sm btn-outline-primary mt-1" onclick="printFile('${app.uploadedFile}')">
+                    Print
+                  </button>`
+                : `<span class="text-muted">No File</span>`
+              }
+            </td>
         
         <td>
           <select class="form-select ${stageClass}" onchange="updateStage(${app.index}, this.value)">
