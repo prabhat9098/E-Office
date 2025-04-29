@@ -14,99 +14,130 @@
     />
     <style>
       body {
-        font-family: "Segoe UI", sans-serif;
-        background-color: #f4f6f9;
-      }
-      .header {
-        background-color: #ffffff;
-        height: 70px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0 20px;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 1000;
-      }
-      .sidebar {
-        background-color: #343a40;
-        width: 220px;
-        position: fixed;
-        top: 70px;
-        bottom: 0;
-        color: white;
-        padding-top: 20px;
-      }
-      .sidebar a {
-        color: #adb5bd;
-        padding: 12px 20px;
-        display: block;
-        text-decoration: none;
-      }
-      .sidebar a:hover,
-      .sidebar a.active {
-        background-color: #495057;
-        color: white;
-      }
-      .main-content {
-        margin-left: 220px;
-        margin-top: 80px;
-        padding: 30px;
-      }
-      .card-box {
-        background: #fff;
-        border-radius: 10px;
-        padding: 20px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-      }
-      .card-box h5 {
-        margin-top: 10px;
-      }
-      .chart-container {
-        margin-top: 40px;
-      }
-      .lang-selector {
-        width: 200px;
-      }
-      .language-selector {
-        width: 150px;
-      }
-      @media (max-width: 768px) {
-        .main-content {
-          margin-left: 0;
-          padding: 20px;
-        }
-        .sidebar {
-          display: none;
-        }
-      }
-      .sidebar.mobile-show {
-        display: block !important;
-        z-index: 1050;
-        position: fixed;
-        left: 0;
-        top: 70px;
-        height: calc(100% - 70px);
-        width: 220px;
-        background-color: #343a40;
-        transition: transform 0.3s ease-in-out;
-      }
-      .overlay {
-        position: fixed;
-        top: 70px;
-        left: 0;
-        width: 100%;
-        height: calc(100% - 70px);
-        background-color: rgba(0, 0, 0, 0.4);
-        z-index: 1040;
-        display: none;
-      }
-      .overlay.show {
-        display: block;
-      }
+  font-family: "Segoe UI", "Noto Sans", sans-serif;
+  background-color: #e9ecef; /* Very light gray-blue background */
+  color: #002147; /* Navy text */
+}
+
+.header {
+  background-color: #001f3f; /* Deep navy */
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  color: #ffffff;
+}
+
+.header h1 {
+  font-size: 24px;
+  color: #ffc107; /* Golden accent for heading */
+}
+
+.sidebar {
+  background-color: #002147; /* Strong navy */
+  width: 220px;
+  position: fixed;
+  top: 70px;
+  bottom: 0;
+  padding-top: 20px;
+  color: #ffffff;
+}
+
+.sidebar a {
+  color: #dee2e6; /* Light gray text */
+  padding: 12px 20px;
+  display: block;
+  text-decoration: none;
+  font-weight: 500;
+  border-left: 4px solid transparent;
+  transition: background-color 0.3s, color 0.3s, border-left 0.3s;
+}
+
+.sidebar a:hover,
+.sidebar a.active {
+  background-color: #001f3f;
+  border-left: 4px solid #ffc107;
+  color: #ffc107;
+}
+
+.main-content {
+  margin-left: 220px;
+  margin-top: 80px;
+  padding: 30px;
+  background-color: #f8f9fa;
+  min-height: calc(100vh - 80px);
+}
+
+.card-box {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 25px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-top: 3px solid #001f3f;
+}
+
+.card-box h5 {
+  margin-top: 10px;
+  color: #002147;
+  font-weight: 600;
+}
+
+.chart-container {
+  margin-top: 40px;
+}
+
+.lang-selector,
+.language-selector {
+  width: 180px;
+  padding: 5px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+    padding: 20px;
+  }
+  .sidebar {
+    display: none;
+  }
+}
+
+.sidebar.mobile-show {
+  display: block !important;
+  z-index: 1050;
+  position: fixed;
+  left: 0;
+  top: 70px;
+  height: calc(100% - 70px);
+  width: 220px;
+  background-color: #002147;
+  transition: transform 0.3s ease-in-out;
+}
+
+.overlay {
+  position: fixed;
+  top: 70px;
+  left: 0;
+  width: 100%;
+  height: calc(100% - 70px);
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1040;
+  display: none;
+}
+
+.overlay.show {
+  display: block;
+}
+
     </style>
   </head>
   <body>

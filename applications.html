@@ -191,7 +191,7 @@
 <div class="main-content">
   <div class="d-flex justify-content-between mb-3">
     <h4 data-translate="submittedApplications">Submitted Applications</h4>
-    <input type="text" id="searchInput" class="form-control search-bar" data-translate="searchPlaceholder" placeholder="Search by ID or Phone...">
+    <input type="text" id="searchInput" class="form-control search-bar" data-translate="searchPlaceholder" placeholder="Search by ID, Name or Phone...">
   </div>
 
    <!-- Filter Options -->
@@ -233,6 +233,7 @@
           <th data-translate="serialNo">S. No.</th>
           <th data-translate="applicationId">Application ID</th>
           <th data-translate="name">Name</th>
+          <th data-translate="dateOfBirth">Date of Birth</th>
           <th data-translate="phone">Phone</th>
           <th data-translate="address">Address</th>
           <th data-translate="city">City</th>
@@ -294,7 +295,7 @@
 
     // Filter the data based on search input and filters
     const filtered = data.filter(app => {
-  const isMatchingSearch = app.id.toLowerCase().includes(searchInput) || app.phone.toLowerCase().includes(searchInput);
+  const isMatchingSearch = app.id.toLowerCase().includes(searchInput) || app.phone.toLowerCase().includes(searchInput) || app.name.toLowerCase().includes(searchInput);
   const isMatchingType = !applicationTypeFilter || app.applicationType.toLowerCase().includes(applicationTypeFilter);
   const isMatchingDepartment = !departmentFilter || app.department.toLowerCase().includes(departmentFilter);
   const isMatchingDate = !dateFilter || formatDate(app.createdAt) === dateFilter;
@@ -318,6 +319,7 @@
         <td>${index + 1}</td>
         <td>${app.id}</td>
         <td>${app.name}</td>
+        <td>${app.dateOfBirth}</td>
         <td>${app.phone}</td>
         <td>${app.address}</td>
         <td>${app.city}</td>

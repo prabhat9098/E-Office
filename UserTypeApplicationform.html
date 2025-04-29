@@ -180,12 +180,17 @@
             <input type="time" class="form-control" id="time" required>
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-4">
             <label class="form-label" data-translate="applicantName">Name of Applicant</label>
             <input type="text" class="form-control" id="applicantName" required>
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-4">
+          <label class="form-label" data-translate="dateOfBirth">Date of Birth</label>
+          <input type="date" class="form-control" id="dateOfBirth" required>
+      </div>
+
+        <div class="col-md-4">
             <label class="form-label" data-translate="contactNumber">Contact Number</label>
             <input type="tel" class="form-control" id="phone" required>
 
@@ -319,6 +324,7 @@
         date: document.getElementById("date").value,
         time: document.getElementById("time").value,
         name: document.getElementById("applicantName").value,
+        dateOfBirth: document.getElementById("dateOfBirth").value,
         phone: document.getElementById("phone").value,
         subject: document.getElementById("subject")?.value || "",
         address: document.getElementById("address").value,
