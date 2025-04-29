@@ -12,23 +12,25 @@
     body, html {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: #f8f9fa;
+      background: #f1f3f6;
+      color: #002147;
     }
 
     .header {
-      background-color: #fff;
-      height: 70px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 20px;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 1000;
-    }
+  background-color: #002147;
+  height: 70px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  color: #ffffff;
+}
 
     .header .logo-title {
       display: flex;
@@ -41,33 +43,34 @@
     }
 
     .sidebar {
-      width: 220px;
-      background: #343a40;
-      color: white;
-      height: 100vh;
-      position: fixed;
-      top: 70px;
-      left: 0;
-      padding-top: 20px;
-    }
+  background-color: #1d3557;
+  width: 220px;
+  position: fixed;
+  top: 70px;
+  bottom: 0;
+  color: white;
+  padding-top: 20px;
+}
 
-    .sidebar .nav-link {
-      color: #adb5bd;
-      padding: 12px 20px;
-      display: flex;
-      align-items: center;
-    }
+.sidebar a {
+  color: #dee2e6;
+  padding: 12px 20px;
+  display: block;
+  text-decoration: none;
+  transition: background-color 0.3s, color 0.3s;
+}
 
-    .sidebar .nav-link:hover, .sidebar .nav-link.active {
-      background: #495057;
-      color: white;
-    }
+.sidebar a:hover,
+.sidebar a.active {
+  background-color: #002147;
+  color: #ffc107;
+}
 
-    .main-content {
-      margin-left: 220px;
-      margin-top: 70px;
-      padding: 30px;
-    }
+.main-content {
+  margin-left: 220px;
+  margin-top: 80px;
+  padding: 30px;
+}
 
     .stage-select {
       border-radius: 6px;
@@ -84,46 +87,49 @@
       max-width: 300px;
     }
 
-    .lang-select {
-      max-width: 150px;
-    }
+    .lang-selector,
+.language-selector {
+  width: 200px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+}
 
-    table th, table td {
-      vertical-align: middle;
-    }
-    @media (max-width: 768px) {
-      .main-content {
-        margin-left: 0;
-        padding: 20px;
-      }
-      .sidebar {
-        display: none;
-      }
-    }
-    .sidebar.mobile-show {
-        display: block !important;
-        z-index: 1050;
-        position: fixed;
-        left: 0;
-        top: 70px;
-        height: calc(100% - 70px);
-        width: 220px;
-        background-color: #343a40;
-        transition: transform 0.3s ease-in-out;
-      }
-      .overlay {
-        position: fixed;
-        top: 70px;
-        left: 0;
-        width: 100%;
-        height: calc(100% - 70px);
-        background-color: rgba(0, 0, 0, 0.4);
-        z-index: 1040;
-        display: none;
-      }
-      .overlay.show {
-        display: block;
-      }
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+    padding: 20px;
+  }
+  .sidebar {
+    display: none;
+  }
+}
+
+.sidebar.mobile-show {
+  display: block !important;
+  z-index: 1050;
+  position: fixed;
+  left: 0;
+  top: 70px;
+  height: calc(100% - 70px);
+  width: 220px;
+  background-color: #1d3557;
+  transition: transform 0.3s ease-in-out;
+}
+
+.overlay {
+  position: fixed;
+  top: 70px;
+  left: 0;
+  width: 100%;
+  height: calc(100% - 70px);
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 1040;
+  display: none;
+}
+
+.overlay.show {
+  display: block;
+}
   </style>
 </head>
 <body>
@@ -273,11 +279,13 @@
   }
 
   function formatDate(datetime) {
-  // Convert "23/04/2025, 13:14:39" to "2025-04-23"
+  // Convert "23/04/2025, 13:14:39" to "29/04/25"
   const parts = datetime.split(",")[0].split("/");
   const [day, month, year] = parts;
-  return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+  const shortYear = year.slice(-2);
+  return `${day.padStart(2, '0')}/${month.padStart(2, '0')}/${shortYear}`;
 }
+
 
 
   // Render table with filtering and search

@@ -8,60 +8,57 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
   <style>
-    body, html {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: #f8f9fa;
-    }
+    body {
+  font-family: "Segoe UI", sans-serif;
+  background-color: #f1f3f6;
+  color: #002147;
+}
 
-    .header {
-      height: 70px;
-      background-color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 25px;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 999;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
+.header {
+  background-color: #002147;
+  height: 70px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  color: #ffffff;
+}
 
-    .sidebar {
-      width: 220px;
-      background: #343a40;
-      color: white;
-      height: 100vh;
-      position: fixed;
-      top: 70px;
-      left: 0;
-      padding-top: 20px;
-    }
+.sidebar {
+  background-color: #1d3557;
+  width: 220px;
+  position: fixed;
+  top: 70px;
+  bottom: 0;
+  color: white;
+  padding-top: 20px;
+}
 
-    .sidebar .nav-link {
-      color: #adb5bd;
-      padding: 12px 20px;
-      display: flex;
-      align-items: center;
-    }
+.sidebar a {
+  color: #dee2e6;
+  padding: 12px 20px;
+  display: block;
+  text-decoration: none;
+  transition: background-color 0.3s, color 0.3s;
+}
 
-    .sidebar .nav-link i {
-      margin-right: 10px;
-      font-size: 1.2rem;
-    }
+.sidebar a:hover,
+.sidebar a.active {
+  background-color: #002147;
+  color: #ffc107;
+}
 
-    .sidebar .nav-link:hover, .sidebar .nav-link.active {
-      background: #495057;
-      color: white;
-    }
-
-    .main-content {
-      margin-left: 220px;
-      margin-top: 90px;
-      padding: 30px;
-    }
+.main-content {
+  margin-left: 220px;
+  margin-top: 80px;
+  padding: 30px;
+}
 
     .form-section {
       background: #fff;
@@ -76,43 +73,49 @@
       font-size: 1.3rem;
     }
 
-    .language-selector {
-      width: 200px;
-    }
+    .lang-selector,
+.language-selector {
+  width: 200px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+}
 
-    @media (max-width: 768px) {
-      .main-content {
-        margin-left: 0;
-        padding: 20px;
-      }
-      .sidebar {
-        display: none;
-      }
-    }
-    .sidebar.mobile-show {
-        display: block !important;
-        z-index: 1050;
-        position: fixed;
-        left: 0;
-        top: 70px;
-        height: calc(100% - 70px);
-        width: 220px;
-        background-color: #343a40;
-        transition: transform 0.3s ease-in-out;
-      }
-      .overlay {
-        position: fixed;
-        top: 70px;
-        left: 0;
-        width: 100%;
-        height: calc(100% - 70px);
-        background-color: rgba(0, 0, 0, 0.4);
-        z-index: 1040;
-        display: none;
-      }
-      .overlay.show {
-        display: block;
-      }
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+    padding: 20px;
+  }
+  .sidebar {
+    display: none;
+  }
+}
+
+.sidebar.mobile-show {
+  display: block !important;
+  z-index: 1050;
+  position: fixed;
+  left: 0;
+  top: 70px;
+  height: calc(100% - 70px);
+  width: 220px;
+  background-color: #1d3557;
+  transition: transform 0.3s ease-in-out;
+}
+
+.overlay {
+  position: fixed;
+  top: 70px;
+  left: 0;
+  width: 100%;
+  height: calc(100% - 70px);
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 1040;
+  display: none;
+}
+
+.overlay.show {
+  display: block;
+}
   </style>
 </head>
 <body>
@@ -298,27 +301,16 @@
     document.addEventListener("DOMContentLoaded", () => {
       const randomId = 'APP' + Math.floor(1000 + Math.random() * 9000);
       document.getElementById('appId').value = randomId;
+  
+      const currentDate = new Date().toISOString().split('T')[0];
+      const currentTime = new Date().toTimeString().split(' ')[0].substring(0, 5);
+      document.getElementById('date').value = currentDate;
+      document.getElementById('time').value = currentTime;
     });
-
-    document.addEventListener("DOMContentLoaded", () => {
-  // Set current date and time by default
-  const currentDate = new Date().toISOString().split('T')[0]; // Get current date in YYYY-MM-DD format
-  const currentTime = new Date().toTimeString().split(' ')[0].substring(0, 5); // Get current time in HH:MM format
-
-  // Set the value of the date and time input fields
-  document.getElementById('date').value = currentDate;
-  document.getElementById('time').value = currentTime;
-
-  // Set application ID
-  const randomId = 'APP' + Math.floor(1000 + Math.random() * 9000);
-  document.getElementById('appId').value = randomId;
-});
-
   
     document.getElementById('appForm').addEventListener('submit', function (e) {
       e.preventDefault();
   
-      // Get data from form
       const application = {
         id: document.getElementById("appId").value,
         date: document.getElementById("date").value,
@@ -334,28 +326,53 @@
         category: document.getElementById("category").value,
         department: document.getElementById("department").value,
         applicationType: document.getElementById("applicationType")?.value || "",
-         attachment: document.getElementById("attachment").files[0]?.name || "No file uploaded",
+        attachment: document.getElementById("attachment").files[0]?.name || "No file uploaded",
         stage: "Received",
         createdAt: new Date().toLocaleString(),
         updatedBy: "",
         updatedAt: ""
       };
   
-      // Get existing applications or create new array
       const applications = JSON.parse(localStorage.getItem("applications") || "[]");
-  
-      // Add new application
       applications.push(application);
-  
-      // Save back to localStorage
       localStorage.setItem("applications", JSON.stringify(applications));
   
       alert("Application submitted successfully!");
   
-      // Reset form
-      this.reset();
+      // WhatsApp message
+      const phoneNumber = application.phone.replace(/\D/g, '');
+      const message = encodeURIComponent(
+    `माननीय सामाजिक न्याय मंत्री श्री संजय शिरसाठ यांच्या ई-ऑफिसमध्ये आपले निवेदन प्राप्त झाले आहे व आपला एप्लीकेशन आयडी आहे: ${application.id}\n\n` +
+    
+    `धन्यवाद\n` +
+    `श्री संजय शिरसाठ\n` +
+    `सामाजिक न्याय मंत्री तथा पालकमंत्री छत्रपती संभाजीनगर\n\n` +
   
-      // Generate new App ID
+    `अर्ज क्रमांक: ${application.id}\n` +
+    `दिनांक: ${application.date}\n` +
+    `वेळ: ${application.time}\n\n` +
+  
+    `अर्जदाराची माहिती:\n` +
+    `नाव: ${application.name}\n` +
+    `जन्मतारीख: ${application.dateOfBirth}\n` +
+    `फोन नंबर: ${application.phone}\n\n` +
+  
+    `अर्जाची माहिती:\n` +
+    `विषय: ${application.subject}\n` +
+    `पत्ता: ${application.address}\n` +
+    `राज्य: ${application.state}\n` +
+    `शहर: ${application.city}\n` +
+    `पिनकोड: ${application.pincode}\n\n` +
+  
+    `सध्याची स्थिती:\n` +
+    `स्टेज: ${application.stage}\n` +
+    `सबमिट केलेल्या वेळेची नोंद: ${application.createdAt}`
+  );
+  
+      // Open WhatsApp
+      window.open(`https://wa.me/91${phoneNumber}?text=${message}`, '_blank');
+  
+      this.reset();
       const newId = 'APP' + Math.floor(1000 + Math.random() * 9000);
       document.getElementById('appId').value = newId;
     });
