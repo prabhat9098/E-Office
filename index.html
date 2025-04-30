@@ -20,11 +20,11 @@
         display: flex;
       }
       .login-img {
-        background: url("https://img.freepik.com/free-vector/modern-devices-composition-with-isometric-image-modern-workplace-with-lots-smart-gadgets-table-illustration_1284-29124.jpg?t=st=1745174692~exp=1745178292~hmac=3f14ff8a29992daa651484d0305bb31db0ab6673e568220b98581126c514759c&w=740")
-          no-repeat center center;
+        background: url("assets/images/person.jpg") no-repeat center center;
         background-size: cover;
         flex: 1;
       }
+      
       .login-form {
         flex: 1;
         display: flex;
@@ -51,16 +51,25 @@
           flex: none;
           width: 100%;
         }
+        
       }
     </style>
   </head>
   <body>
     <!-- Heading Section -->
-    <h4 class="text-center mt-5" data-translate="heading">माननीय मंत्री.श्री संजय शिरसाठ यांचे कार्यालय: ई-ऑफिस</h4>
+    
     <div class="login-container">
-      <div class="login-img"></div>
+      <div class="login-img d-flex flex-column justify-content-end text-center text-white p-3">
+        <div class="bg-dark bg-opacity-50 rounded-3 p-2">
+          <h5 class="mb-1" style="font-weight: bold;">मा. मंत्री. श्री. संजय शिरसाठ</h5>
+          <small>(समाज कल्याण विभाग तथा पालकमंत्री छत्रपती संभाजीनगर)</small>
+        </div>
+      </div>
+      
       <div class="login-form">
+        
         <div class="form-box">
+          <h4 class="text-center mb-5 mt-2" data-translate="heading">माननीय मंत्री.श्री संजय शिरसाठ यांचे कार्यालय: ई-ऑफिस</h4>
           <h3 class="mb-3 text-center" id="loginHeader" data-translate="adminLoginHeading">Admin Management Login</h3>
 
           <div class="d-flex align-items-center gap-3">

@@ -274,6 +274,31 @@
 
   const username = "Admin"; // Simulate logged-in user
 
+  // Update the stage of an application
+  function updateStage(index, newStage) {
+  const data = JSON.parse(localStorage.getItem("applications") || "[]");
+  const app = data.find(a => a.index === index);
+
+  if (app) {
+    app.stage = newStage;
+    app.updatedBy = username;
+    app.updatedAt = new Date().toLocaleString();
+    localStorage.setItem("applications", JSON.stringify(data));
+    renderTable();
+
+    if (newStage === "Completed") {
+      const phoneNumber = app.phone;
+      const message = `Hello ${app.name}, your application (ID: ${app.id}) has been marked as *Completed*. Thank you for using the E-Office system.`;
+      
+      if (confirm("Do you want to send a WhatsApp update to the applicant?")) {
+        const whatsappUrl = `https://wa.me/91${phoneNumber}?text=${encodeURIComponent(message)}`;
+        window.open(whatsappUrl, '_blank');
+      }
+    }
+  }
+}
+
+
   function logout() {
     window.location.href = 'index.html';
   }
@@ -367,19 +392,7 @@
     });
   }
 
-  // Update the stage of an application
-  function updateStage(index, newStage) {
-    const data = JSON.parse(localStorage.getItem("applications") || "[]");
-    const app = data.find(a => a.index === index);
-
-    if (app) {
-      app.stage = newStage;
-      app.updatedBy = username;
-      app.updatedAt = new Date().toLocaleString();
-      localStorage.setItem("applications", JSON.stringify(data));
-      renderTable();
-    }
-  }
+  
 
   // On page load
   document.addEventListener("DOMContentLoaded", () => {
