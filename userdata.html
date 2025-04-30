@@ -155,6 +155,10 @@
     <a href="applicationform.html" class="nav-link d-flex align-items-center">
       <i class="bi bi-file-earmark-text me-2 fs-5"></i><span data-translate="applicationForm">Application Form</span>
     </a>
+    <a href="outWardForm.html" class="nav-link d-flex align-items-center">
+      <i class="bi bi-file-earmark-text me-2 fs-5"></i>
+      <span data-translate="outwardForm">OutWard Form</span>
+    </a>
     <a href="applications.html" class="nav-link d-flex align-items-center">
       <i class="bi bi-folder-fill me-2 fs-5"></i><span data-translate="applications">Applications</span>
     </a>
@@ -249,51 +253,94 @@
     const uniqueCitiesEl = document.getElementById("uniqueCities");
     const topCityEl = document.getElementById("topCity");
 
-    // Sample Data Fetch
-    const users = [
-      { name: "Amit Sharma", contact: "9876543210", address: "Mumbai, Maharashtra" },
-      { name: "Priya Desai", contact: "9123456789", address: "Pune, Maharashtra" },
-      { name: "Rahul Singh", contact: "9988776655", address: "Bhopal, Madhya Pradesh" },
-      { name: "Anjali Mehta", contact: "9998887776", address: "Mumbai, Maharashtra" },
-      { name: "Suresh Kumar", contact: "9512345678", address: "Indore, Madhya Pradesh" }
-    ];
+    document.addEventListener("DOMContentLoaded", () => {
+  const apiUrl = "https://eoffice.riddleescape.in/applications/application.php";
+  const tbody = document.querySelector("tbody");
+  const totalUsersEl = document.getElementById("totalUsers");
+  const uniqueCitiesEl = document.getElementById("uniqueCities");
+  const topCityEl = document.getElementById("topCity");
 
-    const tableBody = document.getElementById("userTableBody");
+  let users = [];
 
-    function renderTable(data) {
-      tableBody.innerHTML = "";
-      data.forEach(user => {
-        tableBody.innerHTML += `
-          <tr>
-            <td>${user.name}</td>
-            <td>${user.contact}</td>
-            <td>${user.address}</td>
-          </tr>`;
-      });
-    }
+  fetch(apiUrl)
+    .then(response => response.json())
+    .then(data => {
+      if (data.success && Array.isArray(data.data)) {
+        users = data.data.map(item => ({
+          name: item.applicant_name,
+          contact: item.contact_number,
+          address: `${item.city}, ${item.state}`
+        }));
 
-    function updateStats(data) {
-      totalUsersEl.textContent = data.length;
-
-      const cityMap = {};
-      data.forEach(u => {
-        const city = u.address.split(",")[0].trim();
-        cityMap[city] = (cityMap[city] || 0) + 1;
-      });
-
-      const cities = Object.keys(cityMap);
-      uniqueCitiesEl.textContent = cities.length;
-
-      let topCity = "-";
-      let max = 0;
-      for (const city in cityMap) {
-        if (cityMap[city] > max) {
-          max = cityMap[city];
-          topCity = city;
-        }
+        populateTable(users);
+        updateStats(users);
       }
-      topCityEl.textContent = topCity;
+    })
+    .catch(error => {
+      console.error("Error fetching data:", error);
+    });
+
+  function populateTable(userList) {
+    tbody.innerHTML = "";
+    userList.forEach(user => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${user.name}</td>
+        <td>${user.contact}</td>
+        <td>${user.address}</td>
+      `;
+      tbody.appendChild(row);
+    });
+  }
+
+  function updateStats(userList) {
+    totalUsersEl.textContent = userList.length;
+
+    const cityCounts = {};
+    userList.forEach(user => {
+      cityCounts[user.address] = (cityCounts[user.address] || 0) + 1;
+    });
+
+    const uniqueCities = Object.keys(cityCounts);
+    uniqueCitiesEl.textContent = uniqueCities.length;
+
+    let topCity = "-";
+    let maxCount = 0;
+    for (const city in cityCounts) {
+      if (cityCounts[city] > maxCount) {
+        maxCount = cityCounts[city];
+        topCity = city;
+      }
     }
+
+    topCityEl.textContent = topCity;
+  }
+
+  // Filters
+  document.getElementById("filterName").addEventListener("input", applyFilters);
+  document.getElementById("filterContact").addEventListener("input", applyFilters);
+  document.getElementById("filterAddress").addEventListener("input", applyFilters);
+  document.getElementById("resetFilter").addEventListener("click", () => {
+    document.getElementById("filterName").value = "";
+    document.getElementById("filterContact").value = "";
+    document.getElementById("filterAddress").value = "";
+    populateTable(users);
+  });
+
+  function applyFilters() {
+    const nameVal = document.getElementById("filterName").value.toLowerCase();
+    const contactVal = document.getElementById("filterContact").value.toLowerCase();
+    const addressVal = document.getElementById("filterAddress").value.toLowerCase();
+
+    const filtered = users.filter(user =>
+      user.name.toLowerCase().includes(nameVal) &&
+      user.contact.toLowerCase().includes(contactVal) &&
+      user.address.toLowerCase().includes(addressVal)
+    );
+
+    populateTable(filtered);
+  }
+});
 
     menuToggle.addEventListener("click", () => {
   sidebar.classList.toggle("mobile-show");

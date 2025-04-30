@@ -178,6 +178,10 @@
     <i class="bi bi-file-earmark-text me-2 fs-5 "></i> 
     <span data-translate="applicationForm">Application Form</span>
   </a>
+  <a href="outWardForm.html" class="nav-link d-flex align-items-center">
+    <i class="bi bi-file-earmark-text me-2 fs-5"></i>
+    <span data-translate="outwardForm">OutWard Form</span>
+  </a>
   <a href="applications.html" class="nav-link d-flex align-items-center active">
     <i class="bi bi-folder-fill me-2 fs-5"></i> 
     <span data-translate="applications">Applications</span>
@@ -201,24 +205,24 @@
     <input type="text" id="searchInput" class="form-control search-bar" data-translate="searchPlaceholder" placeholder="Search by ID, Name or Phone...">
   </div>
 
-   <!-- Filter Options -->
+   <!-- Filter Options
    <div class="row mb-3">
     <div class="col">
-      <select id="applicationTypeFilter" class="form-select">
+      <select id="applicationTypeDropdown" class="form-select">
         <option data-translate="select_applicant_type" value="">Select Applicant Type</option>
         <option>General</option>
         <option>VIP</option>
         <option>VIP 1</option>
         <option>VIP 2</option>
         <option>VIP 3</option>
-        <!-- Add up to VIP 20+ -->
+        
         <option>VIP 20</option>
         <option>VIP 21</option>
         <option>VIP 22</option>
       </select>
     </div>
     <div class="col">
-      <select id="departmentFilter" class="form-select">
+      <select id="departmentDropdown" class="form-select">
         <option data-translate="select_department" value="">Select Department</option>
         <option data-translate="education">Education</option>
                 <option data-translate="health">Health</option>
@@ -229,7 +233,7 @@
     <div class="col">
       <input type="date" id="dateFilter" class="form-control" />
     </div>
-  </div>
+  </div> -->
 
 
 
@@ -253,7 +257,7 @@
           <th data-translate="submittedOn">Submitted On</th>
           <th data-translate="UploadedFile">Uploaded File</th>
           <th data-translate="stage">Stage</th>
-          <th data-translate="updatedBy">Updated By</th>
+          
           <th data-translate="updatedAt">Updated At</th>
         </tr>
       </thead>
@@ -274,130 +278,140 @@
   };
 
   const username = "Admin"; // Simulate logged-in user
+  let applications = []; // Will hold fetched data from API
 
-  // Update the stage of an application
-  function updateStage(index, newStage) {
-  const data = JSON.parse(localStorage.getItem("applications") || "[]");
-  const app = data.find(a => a.index === index);
+  // Format date from "2025-04-23 13:14:39" to "23/04/25"
+  function formatDate(datetime) {
+    const [datePart] = datetime.split(" ");
+    const [year, month, day] = datePart.split("-");
+    return `${day}/${month}/${year.slice(-2)}`;
+  }
 
-  if (app) {
+  // Fetch applications from API
+  async function fetchApplications() {
+    try {
+      const response = await fetch("https://eoffice.riddleescape.in/applications/application.php");
+      const data = await response.json();
+      applications = data.map((app, index) => ({ ...app, index }));
+      renderTable();
+    } catch (error) {
+      console.error("Error fetching applications:", error);
+      document.getElementById("applicationTableBody").innerHTML = `<tr><td colspan="20" class="text-danger">Failed to load data</td></tr>`;
+    }
+  }
+
+  // Update application stage via API (using POST or PUT - adjust as per API support)
+  async function updateStage(index, newStage) {
+    const app = applications.find(a => a.index === index);
+    if (!app) return;
+
     app.stage = newStage;
     app.updatedBy = username;
-    app.updatedAt = new Date().toLocaleString();
-    localStorage.setItem("applications", JSON.stringify(data));
-    renderTable();
+    app.updatedAt = new Date().toISOString().slice(0, 19).replace("T", " ");
 
-    if (newStage === "Completed") {
-  const phoneNumber = app.phone;
-  const applicationId = app.id;
+    try {
+      const formData = new URLSearchParams();
+      formData.append("id", app.id); // assuming 'id' is used to identify app
+      formData.append("stage", newStage);
+      formData.append("updatedBy", app.updatedBy);
+      formData.append("updatedAt", app.updatedAt);
 
-  // Prompt for department name input
-  const departmentName = prompt("Enter the department name to include in the WhatsApp message:");
+      await fetch("https://eoffice.riddleescape.in/applications/application.php?id=" + app.id, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: formData.toString()
+      });
 
-  if (departmentName) {
-    const message = `नमस्कार,
+      renderTable();
+
+      if (newStage === "Completed") {
+        const phoneNumber = app.phone;
+        const applicationId = app.id;
+
+        const departmentName = prompt("Enter the department name to include in the WhatsApp message:");
+
+        if (departmentName) {
+          const message = `नमस्कार,
 
 मा. श्री. संजय शिरसाठ (मंत्री, सामाजिक न्याय विभाग तथा पालकमंत्री छत्रपती संभाजीनगर जिल्हा) यांच्या ई ऑफिस प्राप्त झालेले निवेदन क्रमांक ${applicationId} पुढे ${departmentName} मध्ये पाठविण्यात आलेले आहे. 
 
 धन्यवाद`;
 
-    if (confirm("व्हाट्सॲपद्वारे अर्जदारास ही माहिती पाठवायची आहे का?")) {
-      const whatsappUrl = `https://wa.me/91${phoneNumber}?text=${encodeURIComponent(message)}`;
-      window.open(whatsappUrl, '_blank');
+          if (confirm("व्हाट्सॲपद्वारे अर्जदारास ही माहिती पाठवायची आहे का?")) {
+            const whatsappUrl = `https://wa.me/91${phoneNumber}?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+          }
+        }
+      }
+    } catch (err) {
+      console.error("Stage update failed:", err);
+      alert("Failed to update stage.");
     }
   }
-}
 
-  }
-}
-
-
-  function logout() {
-    window.location.href = 'index.html';
-  }
-
-  function formatDate(datetime) {
-  // Convert "23/04/2025, 13:14:39" to "29/04/25"
-  const parts = datetime.split(",")[0].split("/");
-  const [day, month, year] = parts;
-  const shortYear = year.slice(-2);
-  return `${day.padStart(2, '0')}/${month.padStart(2, '0')}/${shortYear}`;
-}
-
-
-
-  // Render table with filtering and search
   function renderTable() {
-    const data = JSON.parse(localStorage.getItem("applications") || "[]");
     const tbody = document.getElementById("applicationTableBody");
-    const searchInput = document.getElementById("searchInput").value.toLowerCase();
+    
+    const searchInput = document.getElementById("searchInput")?.value?.toLowerCase() || "";
 
-    // Get filter values
-    const applicationTypeFilter = document.getElementById("applicationTypeFilter").value.toLowerCase();
-    const departmentFilter = document.getElementById("departmentFilter").value.toLowerCase();
-    const dateFilter = document.getElementById("dateFilter").value;
+    const applicationTypeFilter = document.getElementById("applicationTypeFilter")?.value?.toLowerCase() || "";
+    const departmentFilter = document.getElementById("departmentFilter")?.value?.toLowerCase() || "";
+    const dateFilter = document.getElementById("dateFilter")?.value || "";
 
-    tbody.innerHTML = ``;
+    tbody.innerHTML = "";
 
-    // Filter the data based on search input and filters
-    const filtered = data.filter(app => {
-  const isMatchingSearch = app.id.toLowerCase().includes(searchInput) || app.phone.toLowerCase().includes(searchInput) || app.name.toLowerCase().includes(searchInput);
-  const isMatchingType = !applicationTypeFilter || app.applicationType.toLowerCase().includes(applicationTypeFilter);
-  const isMatchingDepartment = !departmentFilter || app.department.toLowerCase().includes(departmentFilter);
-  const isMatchingDate = !dateFilter || formatDate(app.createdAt) === dateFilter;
+    const filtered = applications.data.filter(app => {
+      const isMatchingSearch = app.id?.toLowerCase().includes(searchInput) || app.phone?.toLowerCase().includes(searchInput) || app.applicant_name?.toLowerCase().includes(searchInput);
+      const isMatchingType = !applicationTypeFilter || app.application_type?.toLowerCase().includes(applicationTypeFilter);
+      const isMatchingDepartment = !departmentFilter || app.department?.toLowerCase().includes(departmentFilter);
+      const isMatchingDate = !dateFilter || formatDate(app.createdAt) === dateFilter;
 
-  return isMatchingSearch && isMatchingType && isMatchingDepartment && isMatchingDate;
-});
+      return isMatchingSearch && isMatchingType && isMatchingDepartment && isMatchingDate;
+    });
 
+    
 
     if (filtered.length === 0) {
       tbody.innerHTML = `<tr><td colspan="20" class="text-muted">No applications found.</td></tr>`;
       return;
     }
 
-    // Loop through filtered applications and display them
     filtered.forEach((app, index) => {
       const tr = document.createElement("tr");
-
+      
       const stageClass = stageClasses[app.stage] || "stage-received";
 
       tr.innerHTML = `
         <td>${index + 1}</td>
-        <td>${app.id}</td>
-        <td>${app.name}</td>
-        <td>${app.dateOfBirth}</td>
-        <td>${app.phone}</td>
+        <td>${applica.id}</td>
+        <td>${app.applicant_name}</td>
+        <td>${app.dob || "-"}</td>
+        <td>${app.contact_number}</td>
         <td>${app.address}</td>
         <td>${app.city}</td>
         <td>${app.state}</td>
         <td>${app.pincode}</td>
         <td>${app.subject}</td>
         <td>${app.category}</td>
-        <td>${app.applicationType}</td>
+        <td>${app.application_type}</td>
         <td>${app.department}</td>
-        <td>${app.createdAt}</td>
-        
+        <td>${formatDate(app.createdAt)}</td>
         <td>
-              ${app.uploadedFile 
-                ? `<a href="${app.uploadedFile}" target="_blank" class="text-primary" title="View File">
-                    <i class="bi bi-paperclip fs-4"></i>
-                  </a>
-                  <br/>
-                  <a href="${app.uploadedFile}" download class="btn btn-sm btn-outline-success mt-1">
-                    Download
-                  </a>
-                  <button class="btn btn-sm btn-outline-primary mt-1" onclick="printFile('${app.uploadedFile}')">
-                    Print
-                  </button>`
-                : `<span class="text-muted">No File</span>`
-              }
-            </td>
+          ${app.attachment 
+            ? `<a href="${app.attachment}" target="_blank"><i class="bi bi-paperclip fs-4"></i></a><br/>
+               <a href="${app.attachment}" download class="btn btn-sm btn-outline-success mt-1">Download</a>
+               <button class="btn btn-sm btn-outline-primary mt-1" onclick="printFile('${app.attachment}')">Print</button>`
+            : `<span class="text-muted">No File</span>`
+          }
+        </td>
         <td>
           <select class="form-select ${stageClass}" onchange="updateStage(${app.index}, this.value)">
             ${stages.map(stage => `<option value="${stage}" ${stage === app.stage ? "selected" : ""}>${stage}</option>`).join("")}
           </select>
         </td>
-        <td>${app.updatedBy || "-"}</td>
+        
         <td>${app.updatedAt || "-"}</td>
       `;
 
@@ -405,23 +419,25 @@
     });
   }
 
-  
-
-  // On page load
   document.addEventListener("DOMContentLoaded", () => {
-    const data = JSON.parse(localStorage.getItem("applications") || "[]");
-    data.forEach((app, i) => app.index = i);
-    localStorage.setItem("applications", JSON.stringify(data));
-    renderTable();
+    fetchApplications();
 
-    // Add event listeners for search input and filters
-    document.getElementById("searchInput").addEventListener("input", renderTable);
-    document.getElementById("applicationTypeFilter").addEventListener("change", renderTable);
-    document.getElementById("departmentFilter").addEventListener("change", renderTable);
-    document.getElementById("dateFilter").addEventListener("change", renderTable);
+    // Bind filters
+    document.getElementById("searchInput")?.addEventListener("input", renderTable);
+    document.getElementById("applicationTypeDropdown")?.addEventListener("change", renderTable);
+    document.getElementById("departmentDropdown")?.addEventListener("change", renderTable);
+    document.getElementById("dateFilter")?.addEventListener("change", renderTable);
   });
+
+  function logout() {
+    window.location.href = 'index.html';
+  }
 </script>
+
 <script src="Assets/Language/i18n.js"></script>
+<script src="Apis/fetchApplications.js"></script>
+<script src="Services/fetchdropdowns.js"></script>
+
 <script>
   // Redirect to login if user is not logged in
   if (!localStorage.getItem("user")) {
