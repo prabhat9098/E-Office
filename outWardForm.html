@@ -161,11 +161,11 @@
       <i class="bi bi-person-plus-fill me-2 fs-5"></i> 
       <span data-translate="addUser">Add User</span>
     </a>
-    <a href="applicationform.html" class="nav-link d-flex align-items-center active">
+    <a href="applicationform.html" class="nav-link d-flex align-items-center ">
       <i class="bi bi-file-earmark-text me-2 fs-5 "></i> 
       <span data-translate="applicationForm">Application Form</span>
     </a>
-    <a href="outWardForm.html" class="nav-link d-flex align-items-center">
+    <a href="outWardForm.html" class="nav-link d-flex align-items-center active">
       <i class="bi bi-file-earmark-text me-2 fs-5"></i>
       <span data-translate="outwardForm">OutWard Form</span>
     </a>
@@ -193,7 +193,7 @@
 
     <form id="appForm">
       <div class="row g-3">
-        <div class="col-md-6">
+        <div class="col-md-3">
             <label class="form-label" data-translate="applicationID">Application ID</label>
           <input type="text" class="form-control" id="appId" readonly>
         </div>
@@ -205,6 +205,11 @@
             <label class="form-label" data-translate="applicationTime">Time</label>
             <input type="time" class="form-control" id="time" required>
         </div>
+
+        <div class="col-md-3">
+          <label class="form-label" data-translate="email">Email</label>
+          <input type="email" class="form-control" id="email" required>
+      </div>
 
         <div class="col-md-4">
             <label class="form-label" data-translate="applicantName">Name of Applicant</label>
@@ -354,7 +359,7 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    const randomId = 'IN' + Math.floor(1000 + Math.random() * 9000);
+    const randomId = 'OUT' + Math.floor(1000 + Math.random() * 9000);
     document.getElementById('appId').value = randomId;
 
     const currentDate = new Date().toISOString().split('T')[0];
@@ -390,6 +395,7 @@
     formData.append("applicant_type_id", document.getElementById("applicationTypeDropdown").value);
     formData.append("dob", document.getElementById("dateOfBirth").value);
     formData.append("state", document.getElementById("state").value);
+    formData.append("email", document.getElementById("email").value);
     formData.append("city", document.getElementById("city").value);
     formData.append("pincode", document.getElementById("pincode").value);
 
@@ -401,48 +407,48 @@
     try {
       const result = await submitApplication(formData);
       if (result.success) {
-        const application = {
-          id: formData.get("application_id"),
-          date: formData.get("application_date"),
-          time: formData.get("application_time"),
-          name: formData.get("applicant_name"),
-          dateOfBirth: formData.get("dob"),
-          phone: formData.get("contact_number"),
-          subject: formData.get("subject"),
-          address: formData.get("address"),
-          state: formData.get("state"),
-          city: formData.get("city"),
-          pincode: formData.get("pincode"),
-          stage: "सादर",
-          createdAt: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
-        };
+        // const application = {
+        //   id: formData.get("application_id"),
+        //   date: formData.get("application_date"),
+        //   time: formData.get("application_time"),
+        //   name: formData.get("applicant_name"),
+        //   dateOfBirth: formData.get("dob"),
+        //   phone: formData.get("contact_number"),
+        //   subject: formData.get("subject"),
+        //   address: formData.get("address"),
+        //   state: formData.get("state"),
+        //   city: formData.get("city"),
+        //   pincode: formData.get("pincode"),
+        //   stage: "सादर",
+        //   createdAt: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
+        // };
 
-        const phoneNumber = application.phone.replace(/\D/g, '');
-        const message = encodeURIComponent(
-          `माननीय सामाजिक न्याय मंत्री श्री संजय शिरसाठ यांच्या ई-ऑफिसमध्ये आपले निवेदन प्राप्त झाले आहे व आपला एप्लीकेशन आयडी आहे: ${application.id}\n\n` +
-          `धन्यवाद\n` +
-          `श्री संजय शिरसाठ\n` +
-          `सामाजिक न्याय मंत्री तथा पालकमंत्री छत्रपती संभाजीनगर\n\n` +
-          `अर्ज क्रमांक: ${application.id}\n` +
-          `दिनांक: ${application.date}\n` +
-          `वेळ: ${application.time}\n\n` +
-          `अर्जदाराची माहिती:\n` +
-          `नाव: ${application.name}\n` +
-          `जन्मतारीख: ${application.dateOfBirth}\n` +
-          `फोन नंबर: ${application.phone}\n\n` +
-          `अर्जाची माहिती:\n` +
-          `विषय: ${application.subject}\n` +
-          `पत्ता: ${application.address}\n` +
-          `राज्य: ${application.state}\n` +
-          `शहर: ${application.city}\n` +
-          `पिनकोड: ${application.pincode}\n\n` +
-          `सध्याची स्थिती:\n` +
-          `स्टेज: ${application.stage}\n` +
-          `सबमिट केलेल्या वेळेची नोंद: ${application.createdAt}`
-        );
+        // const phoneNumber = application.phone.replace(/\D/g, '');
+        // const message = encodeURIComponent(
+        //   `माननीय सामाजिक न्याय मंत्री श्री संजय शिरसाठ यांच्या ई-ऑफिसमध्ये आपले निवेदन प्राप्त झाले आहे व आपला एप्लीकेशन आयडी आहे: ${application.id}\n\n` +
+        //   `धन्यवाद\n` +
+        //   `श्री संजय शिरसाठ\n` +
+        //   `सामाजिक न्याय मंत्री तथा पालकमंत्री छत्रपती संभाजीनगर\n\n` +
+        //   `अर्ज क्रमांक: ${application.id}\n` +
+        //   `दिनांक: ${application.date}\n` +
+        //   `वेळ: ${application.time}\n\n` +
+        //   `अर्जदाराची माहिती:\n` +
+        //   `नाव: ${application.name}\n` +
+        //   `जन्मतारीख: ${application.dateOfBirth}\n` +
+        //   `फोन नंबर: ${application.phone}\n\n` +
+        //   `अर्जाची माहिती:\n` +
+        //   `विषय: ${application.subject}\n` +
+        //   `पत्ता: ${application.address}\n` +
+        //   `राज्य: ${application.state}\n` +
+        //   `शहर: ${application.city}\n` +
+        //   `पिनकोड: ${application.pincode}\n\n` +
+        //   `सध्याची स्थिती:\n` +
+        //   `स्टेज: ${application.stage}\n` +
+        //   `सबमिट केलेल्या वेळेची नोंद: ${application.createdAt}`
+        // );
 
-        // Open WhatsApp
-        window.open(`https://wa.me/91${phoneNumber}?text=${message}`, '_blank');
+        // // Open WhatsApp
+        // window.open(`https://wa.me/91${phoneNumber}?text=${message}`, '_blank');
 
         // Reset form
         document.getElementById('appForm').reset();
@@ -450,7 +456,7 @@
         document.getElementById('appId').value = newId;
 
         // Optional success modal or alert
-        alert("Application submitted and WhatsApp message sent!");
+        alert("Application submitted Successfully!");
         // showSuccessModal('Application submitted and WhatsApp message sent!');
       } else {
         alert("Error: " + result.message);

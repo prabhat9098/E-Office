@@ -98,24 +98,27 @@ function getStageClass(stage) {
 }
 
 
-function convertToIST(utcTimestamp) {
-    // Create a Date object from the UTC timestamp
-    const utcDate = new Date(utcTimestamp);
-
+function convertToIST(timestamp) {
+    // Convert '2025-04-30 22:26:55' to ISO 8601 format '2025-04-30T22:26:55Z'
+    const isoTimestamp = timestamp.replace(" ", "T") + "Z"; // Adding 'T' and 'Z' to make it ISO format
+  
+    // Convert the ISO timestamp to a JavaScript Date object
+    const utcDate = new Date(isoTimestamp);
+  
     // Convert the UTC time to IST (Indian Standard Time) by using the toLocaleString method
     const options = {
-        timeZone: 'Asia/Kolkata', // IST time zone
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false
+      timeZone: "Asia/Kolkata", // IST time zone
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
     };
-
+  
     // Convert to IST and format the result
-    const istDate = utcDate.toLocaleString('en-GB', options); // 'en-GB' for consistent formatting
-
+    const istDate = utcDate.toLocaleString("en-GB", options); // 'en-GB' for consistent formatting
+  
     return istDate;
-}
+  }

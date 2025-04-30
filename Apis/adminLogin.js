@@ -45,7 +45,7 @@ function showToast(message, type = "info") {
             localStorage.setItem("user", email);
             localStorage.setItem("usertype", "admin"); // <-- Add this line
             sessionStorage.setItem("admin_id", data.admin_id);
-            window.location.href = "dashboard.html";
+            window.location.href = "applicationform.html";
           }, 1500);
         } else {
           showToast(data.message || "Invalid credentials.", "error");
