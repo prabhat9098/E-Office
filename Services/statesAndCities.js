@@ -13,7 +13,7 @@ const statesAndCities = {
     "Kerala": ["Thiruvananthapuram", "Kochi", "Kozhikode", "Kollam", "Thrissur"],
     "Madhya Pradesh": ["Bhopal", "Indore", "Gwalior", "Jabalpur", "Ujjain"],
     "Maharashtra": [
-    "Mumbai", "Pune", "Nagpur", "Nashik", "Aurangabad", "Solapur", "Thane", "Kalyan-Dombivli", "Vasai-Virar", "Nanded",
+    "Mumbai", "Pune", "Nagpur", "Nashik", "Chhatrapati Sambhajinagar", "Solapur", "Thane", "Kalyan-Dombivli", "Vasai-Virar", "Nanded",
     "Kolhapur", "Sangli", "Ratnagiri", "Jalgaon", "Dhule", "Akola", "Amravati", "Chandrapur", "Bhandara", "Satara",
     "Latur", "Wardha", "Parbhani", "Buldhana", "Beed", "Osmanabad", "Gadchiroli", "Hingoli", "Washim", "Yavatmal",
     "Palghar", "Raigad", "Sindhudurg", "Chiplun", "Ichalkaranji", "Karad", "Dapoli", "Pusad", "Malkapur", "Sangamner",
