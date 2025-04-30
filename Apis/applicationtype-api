@@ -1,4 +1,4 @@
-const APPLICATION_TYPE_API_URL = "https://eoffice.riddleescape.in/application_types/application_type.php";
+const APPLICATION_TYPE_API_URL = "https://eoffice.riddleescape.in/applicant_types/applicant_type.php";
 let selectedApplicationTypeId = null;
 
 // Fetch Application Types
