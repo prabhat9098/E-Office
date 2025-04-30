@@ -287,14 +287,26 @@
     renderTable();
 
     if (newStage === "Completed") {
-      const phoneNumber = app.phone;
-      const message = `Hello ${app.name}, your application (ID: ${app.id}) has been marked as *Completed*. Thank you for using the E-Office system.`;
-      
-      if (confirm("Do you want to send a WhatsApp update to the applicant?")) {
-        const whatsappUrl = `https://wa.me/91${phoneNumber}?text=${encodeURIComponent(message)}`;
-        window.open(whatsappUrl, '_blank');
-      }
+  const phoneNumber = app.phone;
+  const applicationId = app.id;
+
+  // Prompt for department name input
+  const departmentName = prompt("Enter the department name to include in the WhatsApp message:");
+
+  if (departmentName) {
+    const message = `नमस्कार,
+
+मा. श्री. संजय शिरसाठ (मंत्री, सामाजिक न्याय विभाग तथा पालकमंत्री छत्रपती संभाजीनगर जिल्हा) यांच्या ई ऑफिस प्राप्त झालेले निवेदन क्रमांक ${applicationId} पुढे ${departmentName} मध्ये पाठविण्यात आलेले आहे. 
+
+धन्यवाद`;
+
+    if (confirm("व्हाट्सॲपद्वारे अर्जदारास ही माहिती पाठवायची आहे का?")) {
+      const whatsappUrl = `https://wa.me/91${phoneNumber}?text=${encodeURIComponent(message)}`;
+      window.open(whatsappUrl, '_blank');
     }
+  }
+}
+
   }
 }
 
